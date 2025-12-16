@@ -2,7 +2,7 @@ from typing import Union, Annotated
 import uvicorn
 import os
 from fastapi import FastAPI, File, Form, UploadFile, HTTPException, Depends
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
 from auth import router as auth_router
 from starlette.requests import Request
 from starlette.middleware.cors import CORSMiddleware
@@ -20,7 +20,7 @@ from request_types import (UrlType, SettingStatus, UserRights, DataStory)
 from dependencies import authenticated_user
 from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException as StarletteHTTPException
-from config import Settings
+from config import local_data
 from pathlib import Path
 
 class SPAStaticFiles(StaticFiles):
@@ -42,14 +42,14 @@ app.add_middleware(CORSMiddleware, allow_origins=['http://localhost:3000'], allo
 app.include_router(auth_router)
 
 
-data = os.environ.get("DATA_DIR", Settings.local_data)
+data = os.environ.get("DATA_DIR", local_data)
 
 
 @app.get("/")
 def hello_world():
     retStruc = {"app": "CLARIAH Data Stories Service", "version": "1.0"}
     # jsonHeaders(response)
-    return retStruc
+    return RedirectResponse("http://localhost:3000")
 
 @app.post("/check_url")
 def check_url(data: UrlType):
@@ -252,10 +252,10 @@ async def resources(uuid: str, resourcetype: str, filename: str):
 #     return FileResponse(fp)
 
 def get_auth_status(user):
-    return {"logged_in": "yes", "user": "Rob Zeeman", "eppn": "666"}
-    # if user:
-    #     return {"logged_in": "yes", "user": user.name, "eppn": user.user_id}
-    # return {"logged_in": "no", "user": "", "eppn": ""}
+    #return {"logged_in": "yes", "user": "Rob Zeeman", "eppn": "666"}
+    if user:
+        return {"logged_in": "yes", "user": user.name, "eppn": user.user_id}
+    return {"logged_in": "no", "user": "", "eppn": ""}
 
 
 if __name__ == "__main__":

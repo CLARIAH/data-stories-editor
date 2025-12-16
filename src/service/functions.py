@@ -6,10 +6,10 @@ import uuid
 from datetime import datetime
 from zoneinfo import ZoneInfo
 from urllib.parse import urlparse
-from config import Settings
+from config import local_data
 import requests
 
-data = os.environ.get("DATA_DIR", Settings.local_data)
+data = os.environ.get("DATA_DIR", local_data)
 
 def createDataFolder():
     #data = 'data/'
@@ -256,6 +256,14 @@ def getListUUIDs():
     con.close()
     return list(res)
 
+def insert_user(user_data: dict):
+    con = sl.connect(data + '/datastories.db')
+    cur = con.cursor()
+    sql = "INSERT INTO visitors (name, email, eppn) VALUES (?, ?, ?)"
+    values = (user_data["nickname"], user_data["email"], user_data["sub"])
+    cur.execute(sql, values)
+    cur.close()
+    con.close()
 
 
 def tooManyStories(max):
