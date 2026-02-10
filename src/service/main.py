@@ -1,7 +1,8 @@
+import json
 from typing import Union, Annotated
 import uvicorn
 import os
-from fastapi import FastAPI, File, Form, UploadFile, HTTPException, Depends
+from fastapi import FastAPI, File, Form, UploadFile, HTTPException, Depends, Body
 from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
 from auth import router as auth_router
 from starlette.requests import Request
@@ -110,7 +111,7 @@ def delete(ds: str):
 
 # datastory is de inhoud van de json file, ik hoef geen structuur te parsen
 @app.get("/get_item")
-def get_item(ds: str, userdata: Annotated[dict | None, Depends(authenticated_user)]):
+async def get_item(ds: str, userdata: Annotated[dict | None, Depends(authenticated_user)]):
     datastory = {}
     uuid = ds
     status = get_auth_status(userdata)
@@ -137,10 +138,10 @@ async def getDataStories(userdata: Annotated[dict | None, Depends(authenticated_
 
 
 @app.post("/update_datastory")
-def updateDataStory(data: DataStory):
+async def updateDataStory(data: DataStory):
     datastory_id = data["datastory_id"]
     datastory_title = data["datastory_title"]
-    datastory = data["datastory"]
+    datastory = json.dumps(data["datastory"])
 
     # save the content to file
     #path = "data/" + str(datastory_id) + "/datastory.json"
@@ -240,7 +241,7 @@ async def resources(uuid: str, resourcetype: str, filename: str):
 #     return FileResponse(fp)
 
 def get_auth_status(user):
-    #return {"logged_in": "yes", "user": "Rob Zeeman", "eppn": "666"}
+    return {"logged_in": "yes", "user": "Rob Zeeman", "eppn": "3cc036843bde09c86580da2d3d753a527d1e8bfa"}
     if user:
         return {"logged_in": "yes", "user": user.name, "eppn": user.user_id}
     return {"logged_in": "no", "user": "", "eppn": ""}

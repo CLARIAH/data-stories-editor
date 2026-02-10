@@ -148,7 +148,7 @@ function SparqlElement({block, endpoint, store, changeStyle}: {block: object, en
                     <input type="text" id="caption" defaultValue={caption}  size={200} onChange={handleChange}/>
 
                     </div>
-                    <div id="chartDefsBuffer"></div>
+                    <div id="chartDefsBuffer">{block["ds:Cues"]["wp4:data-output-config"]["_cdata"]}</div>
                     {/*<h4>Query file</h4>
                     {hasQueryFile ? (
                         <div>

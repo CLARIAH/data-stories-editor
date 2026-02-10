@@ -396,4 +396,4 @@ def saveDataStory(datastory_id, datastory):
     path = data + str(datastory_id) + "/datastory.json"
 
     with open(path, 'w') as f:
-        json.dump(datastory, f)
+        f.write(datastory)

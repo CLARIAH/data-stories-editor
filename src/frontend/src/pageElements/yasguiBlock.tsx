@@ -39,6 +39,7 @@ export default function YasguiBlock({
     }
 
     function handleQuery(yasgui, query) {
+        console.log(content);
         let tab = yasgui.getTab();
         tab.yasr.storePluginConfig('table', {"compact": true});
         tab.yasr.selectPlugin('table');
