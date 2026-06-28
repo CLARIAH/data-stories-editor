@@ -1,7 +1,8 @@
 services:
   stories:
     image: data_stories
-    container_name: robz
+    build:
+      context: .
     environment:
       - APP_DOMAIN=http://localhost
     volumes:

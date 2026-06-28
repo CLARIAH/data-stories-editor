@@ -4,8 +4,8 @@ import Yasgui from "@triply/yasgui";
 import "@triply/yasgui/build/yasgui.min.css";
 import ProvenanceElement from "./provenanceElement";
 import MetadataElement from "./metaDataElement";
-import Geo from "huc-geo-plugin";
-import Chart from "huc-chart-plugin";
+import Geo from "yasgui-geo-plugin";
+import Chart from "yasgui-chart-plugin";
 import {API_URL} from "../misc/functions";
 
 function SparqlElement({block, endpoint, store, changeStyle}: {block: object, endpoint: string, store: string, changeStyle: Function}) {

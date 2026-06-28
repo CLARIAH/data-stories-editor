@@ -284,10 +284,7 @@ def getNewId(auth_status):
     now = datetime.now(tz=ZoneInfo("Europe/Amsterdam"))
     created = now.strftime("%Y-%m-%d %H:%M:%S")    # creation timestamp
     print('datestring',created)
-    # YYYY-MM-DD hh:mm:ss' 
 
-    # datum = 
-    # print('ideetje', ideetje)
     con = sl.connect(DATA_LOCATION + '/datastories.db')
     cur = con.cursor()   
 
@@ -296,7 +293,6 @@ def getNewId(auth_status):
 
     cur.execute(sql, value)
     con.commit()
-    # id = con.lastrowid #werkt niet bij deze versie van sqllite
     res = cur.execute("SELECT last_insert_rowid()")
     con.commit()
     id = res.fetchone()
