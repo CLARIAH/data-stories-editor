@@ -1,11 +1,19 @@
-FROM  python:3.11-slim
+FROM node:alpine as frontend-build
+RUN apk --no-cache add git
+
+WORKDIR /app
+COPY src/frontend /app/frontend
+
+RUN npm install && npm run build
+
+FROM python:3.13-alpine
 
 WORKDIR /app
 
-COPY ./service/requirements.txt /app/requirements.txt
+COPY src/service/requirements.txt /app/requirements.txt
 
 RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
 
-COPY ./service/ /app/service/
+COPY src/service /app/service/
 
 CMD ["fastapi", "run", "service/main.py", "--port", "80"]

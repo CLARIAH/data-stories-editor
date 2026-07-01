@@ -2,7 +2,7 @@ services:
   stories:
     image: data_stories
     build:
-      context: .
+      context: src
     environment:
       - APP_DOMAIN=http://localhost
       - OIDC_SERVER=${OIDC_SERVER}

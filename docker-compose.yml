@@ -1,7 +1,7 @@
 services:
   dsapp:
-    image: dsdemo:1.1
-    container_name: dsapp
+    image: registry.diginfra.net/tsd/data-stories-editor:0.9
+    container_name: data-stories-editor
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
@@ -9,19 +9,19 @@ services:
       - "traefik.http.routers.dsapp.entrypoints=http"
       - "traefik.http.routers.dsapp.rule=Host(`stories.clariah.nl`)"
     environment:
-      - OIDC_SERVER=https://authentication.clariah.nl
-      - OIDC_CLIENT_ID=nl_clariah_stories
-      - OIDC_CLIENT_SECRET=d1bae360-4043-11f0-bffb-3e22fb0c82e0
-      - OIDC_REDIRECT_URI=https://stories.clariah.nl/oidc_callback
+      - OIDC_SERVER=${OIDC_SERVER}
+      - OIDC_CLIENT_ID=${OIDC_CLIENT_ID}
+      - OIDC_CLIENT_SECRET=${OIDC_CLIENT_SECRET}
+      - OIDC_REDIRECT_URI=${OIDC_REDIRECT_URI}
     volumes:
-      - /data/products/data-stories/data:/app/service/data
+      - ${DATA_LOCATION}:/app/service/data
     networks:
       - traefik-public
 
   stories-backup:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: registry.diginfra.net/tsd/data-stories-backup
+    container_name: data-stories-backup
+    restart: unless-stopped
     environment:
       BACKUP_HOUR: "03"
       BACKUP_MINUTE: "15"
@@ -34,7 +34,7 @@ services:
     networks:
       - traefik-public
     depends_on:
-      - dsapp
+      - data-stories-editor
 
 
 networks:
