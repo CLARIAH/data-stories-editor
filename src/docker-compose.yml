@@ -14,7 +14,7 @@ services:
       - OIDC_CLIENT_SECRET=${OIDC_CLIENT_SECRET}
       - OIDC_REDIRECT_URI=${OIDC_REDIRECT_URI}
     volumes:
-      - /data/products/data-stories/data:/app/service/data
+      - ${DATA_LOCATION}:/app/service/data
     networks:
       - traefik-public
 
