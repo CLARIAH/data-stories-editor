@@ -6,3 +6,4 @@ __pycache__
 /src/frontend/node_modules/
 /src/frontend/build/
 /src/.env-local-oidc
+.env-local-oidc
