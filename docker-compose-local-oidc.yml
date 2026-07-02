@@ -12,4 +12,3 @@ services:
       - ${DATA_LOCATION}:/app/service/data
     ports:
       - 80:80
-
