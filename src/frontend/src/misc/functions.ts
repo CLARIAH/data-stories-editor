@@ -1,5 +1,5 @@
-//export const API_URL = 'http://localhost/';
-export const API_URL = 'https://stories.clariah.nl/';
+export const API_URL = process.env.REACT_APP_API_URL;
+//export const API_URL = 'https://stories.clariah.nl/';
 
 export const VIEW = 0;
 export const EDIT = 1;

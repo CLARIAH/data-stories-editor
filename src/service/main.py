@@ -245,12 +245,12 @@ async def resources(uuid: str, resourcetype: str, filename: str):
 
 def get_auth_status(user):
     #return {"logged_in": "yes", "user": "Rob Zeeman", "eppn": "3cc036843bde09c86580da2d3d753a527d1e8bfa"}
-    if os.environ['OIDC_CLIENT_ID']:
+    if "OIDC_CLIENT_ID" in os.environ:
         if user:
             return {"logged_in": "yes", "user": user.name, "eppn": user.user_id}
         return {"logged_in": "no", "user": "", "eppn": ""}
     else:
-        return {"logged_in": "yes", "user": "Kayser Söze", "eppn": "3cc036843bde09c86580da2d3d753a527d1e8bfa"}
+        return {"logged_in": "yes", "user": "Kayser Söze", "eppn": "666"}
 
 
 app.mount("/", StaticFiles(directory="service/frontend", html=True), name="spa")

@@ -15,6 +15,6 @@ COPY src/service/requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
 
 COPY src/service /app/service/
-COPY --from=frontend-build /app/ /app/frontend
+COPY --from=frontend-build /app/build /app/service/frontend/
 
 CMD ["fastapi", "run", "service/main.py", "--port", "80"]
