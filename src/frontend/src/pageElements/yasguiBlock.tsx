@@ -5,8 +5,8 @@ import "@triply/yasgui/build/yasgui.min.css";
 import MenuAddBox from "./menuAddBox";
 import '../assets/css/yasgui-browser.css';
 import {API_URL} from "../misc/functions";
-import Geo from "huc-geo-plugin";
-import Chart from "huc-chart-plugin";
+import Geo from "@knaw-huc/yasgui-geo-plugin";
+import Chart from "@knaw-huc/yasgui-chart-plugin";
 
 
 export default function YasguiBlock({

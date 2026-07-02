@@ -1,7 +1,7 @@
 services:
   stories:
     build:
-      context: src
+      context: .
     environment:
       - APP_DOMAIN=http://localhost
     volumes:
