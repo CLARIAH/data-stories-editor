@@ -27,3 +27,7 @@ After that you can run start the editor with
 `docker compose -f docker-compose-local.yml --env-file .env-local up -d`
 
 With the current docker compose file the editor will run at `http://localhost`, default port 80. 
+
+For terminating the editor use 
+
+`docker compose -f docker-compose-local.yml --env-file .env-local down`
