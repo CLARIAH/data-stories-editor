@@ -42,8 +42,7 @@ app.include_router(auth_router)
 
 @app.post("/check_url")
 def check_url(data: UrlType):
-    url = data["url"]
-    result = uri_validator(url)
+    result = uri_validator(data.url)
     return {"status": result}
 
 @app.get("/get_settings")
@@ -52,7 +51,7 @@ async def settings(ds: str):
 
 @app.post('/set_settings')
 def set_settings(data: SettingStatus):
-    result = set_status(data["id"], data["status"])
+    result = set_status(data.id, data.status)
     return result
 
 @app.get("/get_setting_users")

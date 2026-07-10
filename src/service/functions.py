@@ -18,7 +18,7 @@ def createDataFolder():
 
 def uri_validator(x):
     try:
-        result = requests.head(x)
+        result = requests.head(x, allow_redirects=True)
         return result.status_code
     except:
         return 0

@@ -1104,7 +1104,7 @@ background-color: #2a6496;
 }
 
 .dsBlock__right{
-overflow-x: scroll;
+overflow-x: auto;
 }
 
 .querySwitch{
