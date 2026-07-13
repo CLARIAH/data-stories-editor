@@ -29,7 +29,7 @@ export default function AuthorizationElement({uuid, eppn, setEditRights, rights,
     }
 
     async function sendData(data) {
-        const result = await fetch(API_URL + '/save_user_rights', {
+        const result = await fetch(API_URL + 'save_user_rights', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

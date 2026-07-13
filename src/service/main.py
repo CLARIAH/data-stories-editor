@@ -61,11 +61,11 @@ def setting_users(ds: str, userdata: Annotated[dict | None, Depends(authenticate
     return result
 
 @app.post("/save_user_rights")
-async def save_user_rights(request: Request, userdata: Annotated[dict | None, Depends(authenticated_user)]):
-    data = await request.json()
+async def save_user_rights(data: UserRights, userdata: Annotated[dict | None, Depends(authenticated_user)]):
+    #data = await request.json()
     status = get_auth_status(userdata)
     if status["logged_in"] == "yes":
-        save_user_rights_str(data["uuid"], data["eppn"], data["rights"])
+        save_user_rights_str(data.uuid, data.eppn, data.rights)
     return {"status": "OK"}
 
 
