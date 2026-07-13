@@ -1,4 +1,4 @@
-FROM node:alpine as frontend-build
+FROM node:alpine AS frontend-build
 RUN apk --no-cache add git
 
 WORKDIR /app
