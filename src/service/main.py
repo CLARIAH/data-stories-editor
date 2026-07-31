@@ -252,8 +252,8 @@ def get_auth_status(user):
         return {"logged_in": "yes", "user": "Kayser Söze", "eppn": "666"}
 
 
-app.mount("/", StaticFiles(directory="service/frontend", html=True), name="spa")
+#app.mount("/", StaticFiles(directory="service/frontend", html=True), name="spa")
 
-# if __name__ == "__main__":
-#     uvicorn.run('main:app', host='0.0.0.0', port=80, timeout_keep_alive=60, reload=True,
-#                 log_level='INFO'.lower())
+if __name__ == "__main__":
+     uvicorn.run('main:app', host='0.0.0.0', port=80, timeout_keep_alive=60, reload=True,
+                 log_level='INFO'.lower())

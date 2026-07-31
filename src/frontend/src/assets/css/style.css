@@ -224,6 +224,7 @@ width: 150px;
 .shareButton{
 font-weight: bold;
 color: #0a3069;
+    cursor:pointer;
 }
 
 .rightsList{

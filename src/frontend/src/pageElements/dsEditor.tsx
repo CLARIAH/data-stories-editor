@@ -30,6 +30,7 @@ function DsEditor({
                       setCommentMode,
                       reload,
                       userLoggedIn,
+                      userName,
                       canEdit,
                       canComment
                   }: {
@@ -48,6 +49,7 @@ function DsEditor({
     setCommentMode: Function,
     reload: Function,
     userLoggedIn: Boolean,
+    userName: string,
     canEdit: boolean,
     canComment: boolean
 }) {
@@ -432,10 +434,10 @@ function DsEditor({
                             }}>
                                 View story
                             </button>
-                            <button className="lowerMenuBtn" onClick={() => {
+                            {/*<button className="lowerMenuBtn" onClick={() => {
                                 saveStory()
                             }}>Save story
-                            </button>
+                            </button>*/}
                         </>}
                         {commentMode && <>
                             <button className="lowerMenuBtn" onClick={() => {
@@ -447,10 +449,10 @@ function DsEditor({
                                 View story
                             </button>
                             {canEdit && <>
-                                <button className="lowerMenuBtn" onClick={() => {
+                                {/*<button className="lowerMenuBtn" onClick={() => {
                                     saveStory()
                                 }}>Save story
-                                </button>
+                                </button>*/}
                                 <button className="lowerMenuBtn" onClick={() => {
                                     setEditMode(true);
                                     setCommentMode(false);

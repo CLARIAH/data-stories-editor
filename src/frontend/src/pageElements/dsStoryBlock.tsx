@@ -29,6 +29,7 @@ function StoryBlock({
                         setOrderArray,
                         reload,
                         editMode,
+                        userName,
                         commentMode
                     }: {
     content: object,
@@ -45,6 +46,7 @@ function StoryBlock({
     setOrderArray: Function
     reload: Function,
     editMode: boolean,
+    userName: string,
     commentMode: boolean
 }): ReactElement {
     const ifHeader = contentType === 'header';
@@ -62,7 +64,6 @@ function StoryBlock({
     let frameHref = '';
     let comments = [];
     let provenanceList = [];
-
 
 
     let leftBlockPartClass = "dsBlock__left";
@@ -236,7 +237,7 @@ function StoryBlock({
                     )}
                     {ifFrame && (<StoryBlockFrame title={h2Title} href={frameHref}/>)}
 
-                    {commentMode && !editMode && <CommentsElement comments={comments}/>}
+                    {commentMode && !editMode && <CommentsElement comments={comments} userName={userName}/>}
 
                 </div>
             </div>

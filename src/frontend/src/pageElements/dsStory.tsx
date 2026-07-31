@@ -27,6 +27,7 @@ function Story() {
     const [editMode, setEditMode] = useState(false);
     const [commentMode, setCommentMode] = useState(false);
     const [userLoggedIn, setUserLoggedin] = useState(true);
+    const [userName, setUserName] = useState("");
     const [canEdit, setCanEdit] = useState(false);
     const [canComment, setCanComment] = useState(false);
 
@@ -52,6 +53,7 @@ function Story() {
         setDataStoryData(json["datastory"]);
         setDataElements(json["datastory"]);
         if (json["status"]["logged_in"] === "yes") {
+            setUserName(json["status"]["user"]);
             setUserLoggedin(true);
             if (hasRight(json["status"]["rights"], EDIT)) {
                 setCanEdit(true);
@@ -141,6 +143,7 @@ function Story() {
                             setOrderArray={setStoryOrder}
                             reload={reload}
                             editMode={editMode}
+                            userName={userName}
                             commentMode={commentMode}
                         ></ DsStoryBlock>
 
@@ -168,6 +171,7 @@ function Story() {
                                     setOrderArray={setStoryOrder}
                                     reload={reload}
                                     editMode={editMode}
+                                    userName={userName}
                                     commentMode={commentMode}
                                 ></ DsStoryBlock>
 
@@ -197,6 +201,7 @@ function Story() {
                 setCommentMode={setCommentMode}
                 reload={reload}
                 userLoggedIn={userLoggedIn}
+                userName={userName}
                 canEdit={canEdit}
                 canComment={canComment}
             />

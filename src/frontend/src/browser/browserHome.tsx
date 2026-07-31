@@ -182,8 +182,6 @@ function BrowserHome() {
                             <ul>
                                 <li>The SPARQL editor</li>
                                 <li>Metadata and provenance editors</li>
-                                <li>Authorisation</li>
-                                <li>Comments</li>
                             </ul>
                             <div>Besides these features we are working on bugfixing, user documentation and improving
                                 usability.
