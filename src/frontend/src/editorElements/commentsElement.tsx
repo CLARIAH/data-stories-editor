@@ -14,17 +14,26 @@ function CommentsElement({comments, userName}: {comments: object[], userName: st
     }
 
     const saveComment = () => {
-        comments.push({"comment": {"_text": commText}, "dct:author": userName, "dct:date": Date()});
+        if (newItem)
+            comments.push({"comment": {"_text": commText}, "dct:author": userName, "dct:date": Date()});
+        else {
+            comments[comIndex]["comment"]["_text"] = commText;
+            comments[comIndex]["comment"]["dct:author"] = userName;
+        }
         setNewItem(true);
         setEditCommentMode(false);
     }
 
     const deleteComment = (commentIndex: number) => {
-        comments.splice(commentIndex, 1);
-        setRefresh(!refresh);
+        if (window.confirm('Delete comment?')) {
+            comments.splice(commentIndex, 1);
+            setRefresh(!refresh);
+        }
+
     }
 
     const editComment = (commentIndex: number) => {
+        setEditCommentMode(true);
         setNewItem(false);
         setComIndex(commentIndex);
     }
@@ -34,16 +43,16 @@ function CommentsElement({comments, userName}: {comments: object[], userName: st
         {comments.map((item, index) => {
             return (
                 <div key={index}>
-                    {(editCommentMode && !newItem && index === comIndex ) ?
+                    {(!editCommentMode ) ?
                         (<>
                     <strong>{item["dct:author"]} - {item["dct:date"]}</strong>
                     <div className="multiLineText">{item["comment"]["_text"]}</div>
                     {item["dct:author"] === userName && <div className="sharedWithRow">
-                        <div className="shareButton">edit</div>
+                        <div className="shareButton" onClick={() => editComment(index)}>edit</div>
                         <div className="shareButton" onClick={() => deleteComment(index)}>delete</div>
                     </div>}
                     <hr className="commentDivider"/>
-                    </>) : (
+                    </>) : (editCommentMode && !newItem && index === comIndex &&
                             <div>
                                 <textarea onChange={handleChange}>{comments[comIndex]["comment"]["_text"]}</textarea>
                                 <div className="commentSaveBtn">
