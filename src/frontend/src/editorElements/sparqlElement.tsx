@@ -8,7 +8,7 @@ import Geo from "@knaw-huc/yasgui-geo-plugin";
 import Chart from "@knaw-huc/yasgui-chart-plugin";
 import {API_URL} from "../misc/functions";
 
-function SparqlElement({block, endpoint, store, changeStyle}: {block: object, endpoint: string, store: string, changeStyle: Function}) {
+function SparqlElement({block, endpoint, store, changeStyle, writeStory, setWriteStory}: {block: object, endpoint: string, store: string, changeStyle: Function, writeStory: Boolean, setWriteStory: Function}) {
     const [editorStatus, setEditorStatus] = useState("data");
     const [caption, setCaption] = useState<string>(block["ds:Metadata"]["dct:title"]["_text"]);
     const [provenance, setProvenance] = useState(block["ds:Provenance"]);
@@ -100,6 +100,7 @@ function SparqlElement({block, endpoint, store, changeStyle}: {block: object, en
             //localStorage.removeItem("yagui__config");
             document.getElementById(blockID).innerHTML= '';
         }
+        setWriteStory(!writeStory);
         changeStyle();
     }
 

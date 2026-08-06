@@ -3,7 +3,7 @@ import ProvenanceElement from "./provenanceElement";
 import MetadataElement from "./metaDataElement";
 import {API_URL} from "../misc/functions";
 
-function ImageElement({block, changeStyle, setCurrentEditBlock, uuid}: { block: object, changeStyle: Function, setCurrentEditBlock: Function, uuid: string }) {
+function ImageElement({block, changeStyle, setCurrentEditBlock, uuid, writeStory, setWriteStory}: { block: object, changeStyle: Function, setCurrentEditBlock: Function, uuid: string , writeStory: Boolean, setWriteStory: Function}) {
     const [caption, setCaption] = useState<string>(block["ds:Metadata"]["dct:title"]["_text"]);
     const [url, setUrl] = useState<string>(block["_attributes"]["href"]);
     const [provenance, setProvenance] = useState(block["ds:Provenance"]);
@@ -57,6 +57,7 @@ function ImageElement({block, changeStyle, setCurrentEditBlock, uuid}: { block: 
         block["_attributes"]["href"] = wUrl;
         block["ds:Metadata"]["dct:title"]["_text"] = wCaption;
         changeStyle();
+        setWriteStory(!writeStory);
         //setCurrentEditBlock({"block_id": ""});
     }
 

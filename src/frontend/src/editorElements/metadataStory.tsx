@@ -8,7 +8,7 @@ import OtherMetadata from "./otherMetadata";
 import {mdFields, fillFields} from "../misc/functions";
 
 
-function MetadataStory({dsData, setDsData, changeStyle, reload}: { dsData: object, setDsData: Function, changeStyle: Function, reload: Function }) {
+function MetadataStory({dsData, setDsData, changeStyle, reload, writeStory, setWriteStory}: { dsData: object, setDsData: Function, changeStyle: Function, reload: Function , writeStory: Boolean, setWriteStory: Function}) {
     let block = dsData["ds:DataStory"]["ds:Metadata"];
     let fields = fillFields(block);
 
@@ -29,6 +29,7 @@ function MetadataStory({dsData, setDsData, changeStyle, reload}: { dsData: objec
         tmpData["ds:DataStory"]["ds:Metadata"] = tmpBlock;
         setDsData(tmpData);
         reload();
+        setWriteStory(!writeStory);
         changeStyle();
 
     }

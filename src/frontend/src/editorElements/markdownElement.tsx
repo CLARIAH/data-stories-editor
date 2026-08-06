@@ -5,7 +5,7 @@ import ProvenanceElement from "./provenanceElement";
 import MetadataElement from "./metaDataElement";
 
 
-function MarkdownElement({block, changeStyle}: {block: object, changeStyle: Function}) {
+function MarkdownElement({block, changeStyle, writeStory, setWriteStory}: {block: object, changeStyle: Function, writeStory: Boolean, setWriteStory: Function}) {
     const [value, setValue] = React.useState(block["_text"]);
     const [provenance, setProvenance] = React.useState(block["ds:Provenance"]);
     const [headerValue, setHeaderValue] = React.useState(block["ds:Metadata"]["dct:title"]["_text"]);
@@ -16,6 +16,7 @@ function MarkdownElement({block, changeStyle}: {block: object, changeStyle: Func
         block["_text"] = value;
         block["ds:Metadata"]["dct:title"]["_text"] = headerValue;
         block["ds:Provenance"] = provenance;
+        setWriteStory(!writeStory);
         changeStyle();
     }
 

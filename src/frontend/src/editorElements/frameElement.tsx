@@ -3,7 +3,7 @@ import Iframe from "react-iframe";
 import ProvenanceElement from "./provenanceElement";
 import MetadataElement from "./metaDataElement";
 
-function FrameElement({block, changeStyle}: { block: object, changeStyle: Function }) {
+function FrameElement({block, changeStyle, writeStory, setWriteStory}: { block: object, changeStyle: Function , writeStory: Boolean, setWriteStory: Function}) {
     const [caption, setCaption] = useState<string>(block["ds:Metadata"]["dct:title"]["_text"]);
     const [url, setUrl] = useState<string>(block["_attributes"]["href"]);
     const [provenance, setProvenance] = useState(block["ds:Provenance"]);
@@ -29,6 +29,7 @@ function FrameElement({block, changeStyle}: { block: object, changeStyle: Functi
     function saveBlock() {
         if (url !== "") {
             writeToBlock(url, caption);
+            setWriteStory(!writeStory);
         } else {
             alert("No url added!");
         }

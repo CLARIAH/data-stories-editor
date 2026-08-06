@@ -40,7 +40,6 @@ function Story() {
             "ds:DataStory": {}
         });
 
-    //console.log(dataStoryData);
 
     if (Object.keys(dataStoryData["ds:DataStory"]).length === 0) {
         fetch_data();

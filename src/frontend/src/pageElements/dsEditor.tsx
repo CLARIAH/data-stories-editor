@@ -73,9 +73,7 @@ function DsEditor({
     const [provenance, setProvenance] = useState<Object>({});
     const [block, setBlock] = useState<Object>({});
     const [writing, setWriting] = useState(false);
-    //const [loggedIn, setLoggedIn] = useState(userLoggedIn);
-
-    //const blockIndex = findBlockById(currentEditBlock["block_id"]);
+    const [writeStory, setWriteStory] = useState(true);
 
 
     function findBlockById(currentBlock) {
@@ -306,12 +304,14 @@ function DsEditor({
 
 
     useEffect(() => {
-        setFields()
-        changeStyle()
-        //editerBlockSubContent('content')
-
+        setFields();
+        changeStyle();
     }, [dataStoryData, currentEditBlock]);
 
+    useEffect(() => {
+        if (Object.keys(dataStoryData["ds:DataStory"]).length !== 0)
+            saveStory();
+    }, [writeStory]);
 
     const Listdata = ({list}) => {
         let newList = list
@@ -493,14 +493,14 @@ function DsEditor({
                     <div><strong>No block selected</strong></div>}
                     {mimeType === "metadata" &&
                     <MetadataStory dsData={dataStoryData} setDsData={setDataStoryData} changeStyle={changeStyle}
-                                   reload={reload}/>}
+                                   reload={reload} writeStory={writeStory} setWriteStory={setWriteStory}/>}
                     {mimeType === "image/*" &&
                     <ImageElement block={block} changeStyle={changeStyle} setCurrentEditBlock={setCurrentEditBlock}
-                                  uuid={uuid}/>}
-                    {mimeType === "text/html" && <FrameElement block={block} changeStyle={changeStyle}/>}
-                    {mimeType === "text/markdown" && <MarkdownElement block={block} changeStyle={changeStyle}/>}
+                                  uuid={uuid}  writeStory={writeStory} setWriteStory={setWriteStory}/>}
+                    {mimeType === "text/html" && <FrameElement block={block} changeStyle={changeStyle} writeStory={writeStory} setWriteStory={setWriteStory}/>}
+                    {mimeType === "text/markdown" && <MarkdownElement block={block} changeStyle={changeStyle} writeStory={writeStory} setWriteStory={setWriteStory}/>}
                     {mimeType === "application/sparql-query" &&
-                    <SparqlElement block={block} endpoint={getEndpoint()} store={uuid} changeStyle={changeStyle}/>}
+                    <SparqlElement block={block} endpoint={getEndpoint()} store={uuid} changeStyle={changeStyle} writeStory={writeStory} setWriteStory={setWriteStory}/>}
                 </div>)}
             </div>
         </div>
