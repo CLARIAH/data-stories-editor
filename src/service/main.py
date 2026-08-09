@@ -20,7 +20,7 @@ from request_types import (UrlType, SettingStatus, UserRights, DataStory)
 from dependencies import authenticated_user
 from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException as StarletteHTTPException
-from config import DATA_LOCATION, ds_app_url
+from config import DATA_LOCATION, ds_app_url, DEV_MODE
 from pathlib import Path
 import os
 
@@ -251,8 +251,8 @@ def get_auth_status(user):
     else:
         return {"logged_in": "yes", "user": "Kayser Söze", "eppn": "666"}
 
-
-#app.mount("/", StaticFiles(directory="service/frontend", html=True), name="spa")
+if not DEV_MODE:
+    app.mount("/", StaticFiles(directory="service/frontend", html=True), name="spa")
 
 if __name__ == "__main__":
      uvicorn.run('main:app', host='0.0.0.0', port=80, timeout_keep_alive=60, reload=True,
