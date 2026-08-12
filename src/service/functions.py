@@ -101,8 +101,11 @@ def save_user_rights_str(uuid, eppn, code):
 def getDataStorySettings(id):
     con = sl.connect(DATA_LOCATION + '/datastories.db')
     cur = con.cursor()
-    sql = "SELECT status, title, uuid FROM stories WHERE uuid = '" + id + "'"
-    cur.execute(sql)
+    # sql = "SELECT status, title, uuid FROM stories WHERE uuid = '" + id + "'"
+    sql = "SELECT status, title, uuid FROM stories WHERE uuid = ?"    
+    # print(sql)
+    # cur.execute(sql)
+    cur.execute(sql, (id,))
     names = list(map(lambda x: x[0], cur.description)) # ergens opgezocht
     result = cur.fetchall()
     cur.close()
@@ -138,9 +141,18 @@ def getStoryRights(id):
     #data = 'data'
     con = sl.connect(DATA_LOCATION + '/datastories.db')
     cur = con.cursor()
-    sql = "select v.email, v.name, v.eppn, r.rights from rights  r inner join visitors  v on r.eppn = v.eppn where r.story_uuid = '" + id + "'"
-    print(sql)
-    cur.execute(sql)
+    # sql = "select v.email, v.name, v.eppn, r.rights from rights  r inner join visitors  v on r.eppn = v.eppn where r.story_uuid = '" + id + "'"
+    # print(sql)
+    # cur.execute(sql)
+    sql = """
+        SELECT v.email, v.name, v.eppn, r.rights
+        FROM rights r
+        INNER JOIN visitors v ON r.eppn = v.eppn
+        WHERE r.story_uuid = ?
+    """
+    cur.execute(sql, (id,))
+
+
     names = list(map(lambda x: x[0], cur.description)) # ergens opgezocht
     result = cur.fetchall()
     con.commit()
@@ -166,8 +178,11 @@ def set_status(id, status):
     #data = 'data'
     con = sl.connect(DATA_LOCATION + '/datastories.db')
     cur = con.cursor()
-    sql = "UPDATE stories SET status= '" + status +"' WHERE uuid = '" + id + "'"
-    cur.execute(sql)
+    # sql = "UPDATE stories SET status= '" + status +"' WHERE uuid = '" + id + "'"
+    sql = "UPDATE stories SET status = ? WHERE uuid = ?"
+    cur.execute(sql, (status, id))
+
+    # cur.execute(sql)
     con.commit()
     cur.close()
     con.close()
