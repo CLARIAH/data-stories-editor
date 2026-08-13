@@ -8,7 +8,8 @@ from starlette.requests import Request
 from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 from ds_template import template
-from os.path import exists
+import os
+# from os.path import exists
 from functions import (
     getNewId, createDataStoryFolder, removeFromDB,
     deleteDataStoryFolder,getDataStory, getDataStorySettings, fs_tree_to_dict,
@@ -131,10 +132,13 @@ async def get_item(ds: str, userdata: Annotated[dict | None, Depends(authenticat
 @app.get("/get_data_stories")
 async def getDataStories(userdata: Annotated[dict | None, Depends(authenticated_user)]):
     status = 'OK'
+    # print('hier')
     auth_status = get_auth_status(userdata)
     structure = getDataStoriesDB(auth_status)
     message = get_message()
     response = {"status": status, "auth": auth_status, "structure": structure, "message": message}
+    print(json.dumps(response, indent=4, ensure_ascii=False))
+    # print(json.dumps(response, indent=4))
     return response
 
 
@@ -144,6 +148,8 @@ async def updateDataStory(request: Request):
     datastory_id = data["datastory_id"]
     datastory_title = data["datastory_title"]
     datastory = data["datastory_file"]
+    print(json.dumps(datastory, indent=4, ensure_ascii=False))
+    # even if you save one element from one block in the interface, the whole datastory is saved as a json structure
 
     # save the content to file
     #path = "data/" + str(datastory_id) + "/datastory.json"
@@ -183,7 +189,12 @@ async def upload(file: UploadFile, uuid: str = Form(...)):
         # print('zit er niet in')
         return {"status": "uuid not available"}
 
-    filename =  file.filename
+    filename = os.path.basename(file.filename)
+    if not filename or filename in ('.', '..'):
+        return {"status": "Invalid filename"}
+
+
+    # filename =  file.filename
 
     #print("request.files['file'].filename: ", request.files['file'].filename)
     #print("request.files['file'].content_type: ", request.files['file'].content_type)
@@ -210,7 +221,7 @@ async def upload(file: UploadFile, uuid: str = Form(...)):
     with open(filepath, 'ab') as f:
         f.write(data)
 
-    if exists(filepath):
+    if os.path.exists(filepath):
         status = "OK"
     else:
         status = "NOT OK"

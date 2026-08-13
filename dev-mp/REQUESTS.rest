@@ -1,0 +1,40 @@
+### update datastory
+
+POST http://localhost:5000/update_datastory 
+Content-type: application/json
+
+{
+    "datastory_id": "c568ba14-a92f-47e2-b98f-9923d93a80b1",
+    "testding" : "abracadabra",
+    "datastory": {
+        "title": "klootzak",
+        "owner": "Rob"
+    }
+
+
+}
+
+### get_datastory?ds=<uuid>
+
+http://localhost:5000/get_item?ds=c568ba14-a92f-47e2-b98f-9923d93a80b1
+
+
+### get datastories
+
+http://localhost:5000/get_data_stories
+
+
+
+### OPTIONS test
+
+OPTIONS  http://localhost:5000/browse
+
+###
+
+### UPLOAD endpoint
+
+POST http://localhost:5000/upload
+
+
+
+https://stackoverflow.com/questions/10434599/get-the-data-received-in-a-flask-request
