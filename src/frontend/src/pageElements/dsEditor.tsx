@@ -32,7 +32,10 @@ function DsEditor({
                       userLoggedIn,
                       userName,
                       canEdit,
-                      canComment
+                      canComment,
+                      writeStory,
+                      setWriteStory,
+                      writing
                   }: {
     uuid: string
     currentEditBlock: object,
@@ -51,7 +54,10 @@ function DsEditor({
     userLoggedIn: Boolean,
     userName: string,
     canEdit: boolean,
-    canComment: boolean
+    canComment: boolean,
+    writeStory: Boolean,
+    setWriteStory: Function,
+    writing: Boolean
 }) {
 
     let hasId = false
@@ -72,8 +78,7 @@ function DsEditor({
     const [mimeType, setMimeType] = useState("");
     const [provenance, setProvenance] = useState<Object>({});
     const [block, setBlock] = useState<Object>({});
-    const [writing, setWriting] = useState(false);
-    const [writeStory, setWriteStory] = useState(true);
+
 
 
     function findBlockById(currentBlock) {
@@ -308,10 +313,6 @@ function DsEditor({
         changeStyle();
     }, [dataStoryData, currentEditBlock]);
 
-    useEffect(() => {
-        if (Object.keys(dataStoryData["ds:DataStory"]).length !== 0)
-            saveStory();
-    }, [writeStory]);
 
     const Listdata = ({list}) => {
         let newList = list
@@ -357,27 +358,6 @@ function DsEditor({
 
     }
 
-    async function saveStory() {
-        const ds = {
-            datastory_id: uuid,
-            datastory_title: dataStoryData['ds:DataStory']['ds:Metadata']['dct:title'][0]['_text'],
-            datastory_file: dataStoryData
-        }
-        setWriting(true);
-        const response = await fetch(API_URL + 'update_datastory', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(ds)
-        });
-
-        const json = await response.json();
-        if (json.status === 'OK') {
-            setWriting(false);
-        }
-    }
 
     function addProv() {
         let provObj = dataStoryData['ds:DataStory']['ds:Story']['ds:Block'][findBlockById(currentEditBlock['block_id'])]["ds:Provenance"]

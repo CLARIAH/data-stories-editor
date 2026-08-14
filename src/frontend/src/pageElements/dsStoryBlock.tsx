@@ -30,7 +30,10 @@ function StoryBlock({
                         reload,
                         editMode,
                         userName,
-                        commentMode
+                        commentMode,
+                        writeStory,
+                        setWriteStory,
+                        writing
                     }: {
     content: object,
     contentType: String,
@@ -47,7 +50,10 @@ function StoryBlock({
     reload: Function,
     editMode: boolean,
     userName: string,
-    commentMode: boolean
+    commentMode: boolean,
+    writeStory: Boolean,
+    setWriteStory: Function,
+    writing: Boolean
 }): ReactElement {
     const ifHeader = contentType === 'header';
     const ifText = contentType === 'text';
@@ -112,6 +118,7 @@ function StoryBlock({
         dataStoryData["ds:DataStory"]["ds:Story"]["ds:block"] = blockList;
         setDataStoryData(dataStoryData);
         setOrderArray(tmpArr);
+        setWriteStory(!writeStory);
         reload();
     }
 
@@ -174,9 +181,6 @@ function StoryBlock({
         setEditorStatus(true);
     }
 
-    function deleteCurBlock() {
-
-    }
 
 
     useEffect(() => {
@@ -200,6 +204,7 @@ function StoryBlock({
                         <button type="button" name="button" className="bt_icon" onClick={() => {
                             if (window.confirm("Delete data story block?")) {
                                 deleteStoryBlockByID(blockId);
+                                setWriteStory(!writeStory);
                             }
                         }}>
                             <img src={icon_delete} alt=""/>
@@ -237,7 +242,7 @@ function StoryBlock({
                     )}
                     {ifFrame && (<StoryBlockFrame title={h2Title} href={frameHref}/>)}
 
-                    {commentMode && !editMode && <CommentsElement comments={comments} userName={userName}/>}
+                    {commentMode && !editMode && <CommentsElement comments={comments} userName={userName} writeStory={writeStory} setWriteStory={setWriteStory}/>}
 
                 </div>
             </div>

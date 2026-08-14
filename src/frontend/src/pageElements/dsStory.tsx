@@ -30,6 +30,8 @@ function Story() {
     const [userName, setUserName] = useState("");
     const [canEdit, setCanEdit] = useState(false);
     const [canComment, setCanComment] = useState(false);
+    const [writing, setWriting] = useState(false);
+    const [writeStory, setWriteStory] = useState(true);
 
     //console.log('currentDataStory', currentDataStory);
 
@@ -119,6 +121,34 @@ function Story() {
         return out;
     }
 
+    async function saveStory() {
+        const ds = {
+            datastory_id: store,
+            datastory_title: dataStoryData['ds:DataStory']['ds:Metadata']['dct:title'][0]['_text'],
+            datastory_file: dataStoryData
+        }
+        setWriting(true);
+        const response = await fetch(API_URL + 'update_datastory', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(ds)
+        });
+
+        const json = await response.json();
+        if (json.status === 'OK') {
+            setWriting(false);
+        }
+    }
+
+
+    useEffect(() => {
+        if (Object.keys(dataStoryData["ds:DataStory"]).length !== 0)
+            saveStory();
+    }, [writeStory]);
+
     return (
         <>
 
@@ -144,6 +174,9 @@ function Story() {
                             editMode={editMode}
                             userName={userName}
                             commentMode={commentMode}
+                            writeStory={writeStory}
+                            setWriteStory={setWriteStory}
+                            writing={writing}
                         ></ DsStoryBlock>
 
                     ) :
@@ -172,6 +205,9 @@ function Story() {
                                     editMode={editMode}
                                     userName={userName}
                                     commentMode={commentMode}
+                                    writeStory={writeStory}
+                                    setWriteStory={setWriteStory}
+                                    writing={writing}
                                 ></ DsStoryBlock>
 
                             )
@@ -203,6 +239,9 @@ function Story() {
                 userName={userName}
                 canEdit={canEdit}
                 canComment={canComment}
+                writeStory={writeStory}
+                setWriteStory={setWriteStory}
+                writing={writing}
             />
 
         </>

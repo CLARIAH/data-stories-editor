@@ -1,7 +1,7 @@
 import React from "react";
 import {useState} from "react";
 
-function CommentsElement({comments, userName}: {comments: object[], userName: string}) {
+function CommentsElement({comments, userName, writeStory, setWriteStory}: {comments: object[], userName: string, writeStory: Boolean, setWriteStory: Function}) {
     const [editCommentMode, setEditCommentMode] = useState(false);
     const [refresh, setRefresh] = useState(false);
     const [newItem, setNewItem] = useState(true);
@@ -22,11 +22,13 @@ function CommentsElement({comments, userName}: {comments: object[], userName: st
         }
         setNewItem(true);
         setEditCommentMode(false);
+        setWriteStory(!writeStory);
     }
 
     const deleteComment = (commentIndex: number) => {
         if (window.confirm('Delete comment?')) {
             comments.splice(commentIndex, 1);
+            setWriteStory(!writeStory);
             setRefresh(!refresh);
         }
 
