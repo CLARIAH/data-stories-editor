@@ -230,16 +230,26 @@ async def upload(file: UploadFile, uuid: str = Form(...)):
 
 @app.get("/resources/{uuid}/{resourcetype}/{filename}")
 async def resources(uuid: str, resourcetype: str, filename: str):
-    # we can severe the api from the real path, safer I think
-    # TODO checks and balances maybe
+    BASEDIR = Path(DATA_LOCATION).resolve()
+    # makes it a Path object
+    rawpath = BASEDIR / uuid  / 'resources' / resourcetype / filename
 
-    filepath: str = DATA_LOCATION + '/' +uuid + '/resources/' + resourcetype + '/' + filename
+    print(rawpath)
+    # to let this overloading of the slash work, the Path object has to be first in the sequenze
+    filepath = rawpath.resolve()
+    print(filepath)
+    # resolve make the path absolute if relative paths are in the rawpath
 
     # TODO mime-types? Or does send_file this..
-    try:
-        return FileResponse(filepath)
-    except FileNotFoundError:
+    # TODO checks and balances maybe
+
+    if not filepath.is_relative_to(BASEDIR):
+        raise HTTPException(status_code=400, detail="Invalid path request")
+
+    if not filepath.is_file():
         raise HTTPException(status_code=404, detail="File not found!")
+
+    return FileResponse(filepath)
 
     # # read from file serve right mimetype
     # print(filepath)
