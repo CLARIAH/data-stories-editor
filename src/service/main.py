@@ -137,8 +137,7 @@ async def getDataStories(userdata: Annotated[dict | None, Depends(authenticated_
     structure = getDataStoriesDB(auth_status)
     message = get_message()
     response = {"status": status, "auth": auth_status, "structure": structure, "message": message}
-    print(json.dumps(response, indent=4, ensure_ascii=False))
-    # print(json.dumps(response, indent=4))
+    # print(json.dumps(response, indent=4, ensure_ascii=False))
     return response
 
 

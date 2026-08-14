@@ -1,6 +1,16 @@
+### get datastories
+
+http://localhost/get_data_stories
+
+
+
+### get_datastory?ds=<uuid>
+
+http://localhost/get_item?ds=66081fa0-b4c2-4c16-a708-c02510ccebb3
+
 ### update datastory
 
-POST http://localhost:5000/update_datastory 
+POST http://localhost/update_datastory 
 Content-type: application/json
 
 {
@@ -14,26 +24,22 @@ Content-type: application/json
 
 }
 
-### get_datastory?ds=<uuid>
-
-http://localhost:5000/get_item?ds=c568ba14-a92f-47e2-b98f-9923d93a80b1
-
 
 ### get datastories
 
-http://localhost:5000/get_data_stories
+http://localhost/get_data_stories
 
 
 
 ### OPTIONS test
 
-OPTIONS  http://localhost:5000/browse
+OPTIONS  http://localhost/browse
 
 ###
 
 ### UPLOAD endpoint
 
-POST http://localhost:5000/upload
+POST http://localhost/upload
 
 
 
