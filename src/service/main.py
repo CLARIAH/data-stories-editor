@@ -14,7 +14,7 @@ from functions import (
     deleteDataStoryFolder,getDataStory, getDataStorySettings, fs_tree_to_dict,
     tooManyStories, createDataFolder, set_status, createDataStoriesDB, getDataStoriesDB,
     getListUUIDs, updateModifiedDate, saveDataStory, uri_validator, get_setting_users, add_user_rights, revoke_user_rights,
-    save_user_rights_str, get_item_rights, get_message
+    save_user_rights_str, get_item_rights, getMessage
 )
 from request_types import (UrlType, SettingStatus, UserRights, DataStory)
 from dependencies import authenticated_user
@@ -126,6 +126,9 @@ async def get_item(ds: str, userdata: Annotated[dict | None, Depends(authenticat
     response = {"status": status, "datastory": datastory}
     return response
 
+@app.get("/get_message")
+async def get_message():
+    return getMessage()
 
 # hier moet de sqllite database bevraagd worden, om de lijstpagina te genereren
 @app.get("/get_data_stories")
@@ -133,8 +136,8 @@ async def getDataStories(userdata: Annotated[dict | None, Depends(authenticated_
     status = 'OK'
     auth_status = get_auth_status(userdata)
     structure = getDataStoriesDB(auth_status)
-    message = get_message()
-    response = {"status": status, "auth": auth_status, "structure": structure, "message": message}
+    message_json = getMessage()
+    response = {"status": status, "auth": auth_status, "structure": structure, "message": message_json["message"]}
     return response
 
 

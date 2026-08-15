@@ -76,13 +76,13 @@ def fetch_data(sql, values):
         struct.append(row)
     return struct
 
-def get_message():
+def getMessage():
     msg = ""
-    if os.path.isfile(DATA_LOCATION + '/config.toml'):
-        with open(DATA_LOCATION + '/config.toml', 'r') as f:
-            conf = toml.load(f)
-        msg = conf['message']
-    return msg
+    if os.path.isfile(DATA_LOCATION + '/message.json'):
+        with open(DATA_LOCATION + '/message.json', 'r') as f:
+            return json.load(f)
+    else:
+        return {"message": ""}
 
 def change_data(sql, values):
     con = sl.connect(DATA_LOCATION + '/datastories.db')
