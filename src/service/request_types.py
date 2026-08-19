@@ -28,3 +28,4 @@ class ResourceType(str, Enum):
     images = "images"
     audio = "audio"
     video = "video"
+    queries = "queries"

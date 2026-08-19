@@ -3,6 +3,9 @@
 
 ## 19-8-2026
  
+- addes ResourceType queries after I encouterd this in the log `INFO:     127.0.0.1:51837 - "GET /resources/168475ff-7055-4cf0-b1ec-19cd83641f4d/queries/wrak.rq HTTP/1.1" 422 Unprocessable Content`
+
+
 Extra security with typing. 
 is it worth it or overkill when the PATH's are secured? Or is the selfDocumenting nature of typing good, it show up in the localhost/docs 
  
@@ -14,8 +17,8 @@ DISCUSS Are the native fastAPI notices sufficient or give these too much info
 
 
  Extra:
- 
- - 'wrote' a startup script start-dev.sh for development, start the server and the npm server. 
+
+ - 'wrote' a startup script start-dev.sh for development, start the server and the npm server. open the browsers
 
 ## 14-8-2026
 

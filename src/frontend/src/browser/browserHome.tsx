@@ -126,13 +126,13 @@ function BrowserHome() {
                                          setActiveStore(item.uuid);
                                          navigate("story/view/" + activeStore);
                                      }}>
-                                    <div className="dsResultCell dsTitleCell">{item.title}</div>
+                                    <div className="dsResultCell dsTitleCell" role="link">{item.title}</div>
                                     <div className="dsResultCell">{getStatus(item.status)}</div>
                                     <div className="dsResultCell">{item.owner}</div>
                                    {/* <div className="dsResultCell">{item.groep}</div>*/}
                                     <div className="dsResultCell">{item.created}</div>
                                     <div className="dsResultCell">{item.modified}</div>
-                                    <div title="View datastory" className="dsPicResultCell" onClick={() => {
+                                    <div title="View datastory" className="dsPicResultCell" role="link" onClick={() => {
                                         setActiveStore(item.uuid);
                                         navigate("story/view/" + item.uuid);
                                     }}><img className="panelIcon"
@@ -140,7 +140,7 @@ function BrowserHome() {
                                     {loggedIn &&
                                     <>
                                         {item.rights[1] === 'W' ? (
-                                            <div title="Edit datastory" className="dsPicResultCell" onClick={() => {
+                                            <div title="Edit datastory" className="dsPicResultCell" role="link" onClick={() => {
                                                 setActiveStore(item.uuid);
                                                 navigate("story/edit/" + item.uuid);
                                             }}><img className="panelIcon" src={icon_edit}/></div>) : (
@@ -149,7 +149,7 @@ function BrowserHome() {
                                         )}</>}
                                     {loggedIn &&
                                     <>{item.rights[2] === 'D' ? (
-                                        <div title="Delete datastory" className="dsPicResultCell" onClick={() => {
+                                        <div title="Delete datastory" className="dsPicResultCell" role="link" onClick={() => {
                                             delete_datastory(item.uuid)
                                         }}><img className="panelIcon" src={icon_delete}/></div>) : (
                                         <div className="dsPicResultCell"><img className="panelIconDisabled"

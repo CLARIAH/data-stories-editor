@@ -33,9 +33,6 @@ app.add_middleware(SessionMiddleware, secret_key='dkhkajhdlkhdkkk')
 app.add_middleware(CORSMiddleware, allow_origins=[ds_app_url], allow_credentials=True, allow_methods=['*'], allow_headers=['*'])
 app.include_router(auth_router)
 
-
-
-
 # @app.get("/")
 # def hello_world():
 #     retStruc = {"app": "CLARIAH Data Stories Service", "version": "1.0"}
@@ -234,7 +231,7 @@ async def resources(uuid: UUID, resourcetype: ResourceType, filename: str):
     # makes it a Path object
 
     # Non pydantic way
-    # ALLOWED_RESOURCE_TYPES = {"images", "audio", "video"}
+    # ALLOWED_RESOURCE_TYPES = {"images", "audio", "video", "queries"}
     # if resourcetype not in ALLOWED_RESOURCE_TYPES:
     #     raise HTTPException(status_code=400, detail="Invalid resource type")
     # een type/class/object van maken?
@@ -251,7 +248,7 @@ async def resources(uuid: UUID, resourcetype: ResourceType, filename: str):
     # TODO checks and balances maybe
 
     if not filepath.is_relative_to(BASEDIR):
-        raise HTTPException(status_code=400, detail="Invalid path request")
+        raise HTTPException(status_code=400, detail="Invalid path request") # or STATUS codes?  
 
     if not filepath.is_file():
         raise HTTPException(status_code=404, detail="File not found!")
