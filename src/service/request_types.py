@@ -22,3 +22,9 @@ class DataStory(BaseModel):
     datastory_file: str
 
 
+from enum import Enum
+
+class ResourceType(str, Enum):
+    images = "images"
+    audio = "audio"
+    video = "video"

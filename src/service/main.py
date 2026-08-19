@@ -17,14 +17,15 @@ from functions import (
     getListUUIDs, updateModifiedDate, saveDataStory, uri_validator, get_setting_users, add_user_rights, revoke_user_rights,
     save_user_rights_str, get_item_rights, get_message
 )
-from request_types import (UrlType, SettingStatus, UserRights, DataStory)
+from request_types import (UrlType, SettingStatus, UserRights, DataStory, ResourceType)
 from dependencies import authenticated_user
 from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from config import DATA_LOCATION, ds_app_url, DEV_MODE
 from pathlib import Path
-import os
+from uuid import UUID
 
+import os
 
 app = FastAPI()
 
@@ -171,7 +172,7 @@ async def updateDataStory(request: Request):
 #     session['user'] = "Rob Zeeman"
 #     return(jsonify({"status": "ok", "logged_in": session.get('logged_in')}))
 
-
+# Question worden de uuid's gemaakt aan de client kant?
 @app.post('/upload')
 async def upload(file: UploadFile, uuid: str = Form(...)):
     if not file:
@@ -228,10 +229,17 @@ async def upload(file: UploadFile, uuid: str = Form(...)):
     return status
 
 @app.get("/resources/{uuid}/{resourcetype}/{filename}")
-async def resources(uuid: str, resourcetype: str, filename: str):
+async def resources(uuid: UUID, resourcetype: ResourceType, filename: str):
     BASEDIR = Path(DATA_LOCATION).resolve()
     # makes it a Path object
-    rawpath = BASEDIR / uuid  / 'resources' / resourcetype / filename
+
+    # Non pydantic way
+    # ALLOWED_RESOURCE_TYPES = {"images", "audio", "video"}
+    # if resourcetype not in ALLOWED_RESOURCE_TYPES:
+    #     raise HTTPException(status_code=400, detail="Invalid resource type")
+    # een type/class/object van maken?
+
+    rawpath = BASEDIR / str(uuid)  / 'resources' / str(resourcetype.value) / filename
 
     print(rawpath)
     # to let this overloading of the slash work, the Path object has to be first in the sequenze
