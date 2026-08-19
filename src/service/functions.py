@@ -9,6 +9,8 @@ from urllib.parse import urlparse
 from config import DATA_LOCATION
 import requests
 import toml
+from pathlib import Path
+
 
 def createDataFolder():
     #data = 'data/'
@@ -36,7 +38,7 @@ def createDataStoriesDB():
                 status TEXT DEFAULT 'draft',
                 owner TEXT,
                 filename TEXT,
-                created TEXT,
+                created TEXT,chan
                 modified TEXT,
                 store TEXT,
                 title TEXT
@@ -337,16 +339,34 @@ def createDataStoryFolder(id, template):
 
     return True
 
-def deleteDataStoryFolder(uuid):
-    #data = 'data/'
-    directory = DATA_LOCATION +  "/" + str(uuid)
-    if os.path.exists(directory):
-        # os.removedir
-        shutil.rmtree(directory)
+# def deleteDataStoryFolder(uuid):
+#     #data = 'data/'
+#     directory = DATA_LOCATION +  "/" + str(uuid)
+#     if os.path.exists(directory):
+#         # os.removedir
+#         shutil.rmtree(directory)
+#         return True
+#     else:
+#         return False    
+
+def deleteDataStoryFolder(ds_id: str) -> bool:
+    base_dir = Path(DATA_LOCATION).resolve()
+    target_dir = (base_dir / str(ds_id)).resolve()
+
+    # Safety Guardrail: Prevent directory traversal out of DATA_LOCATION
+    if not target_dir.is_relative_to(base_dir):
+        return False
+
+    # Prevent deleting the root data directory itself
+    if target_dir == base_dir:
+        return False
+
+    if target_dir.exists() and target_dir.is_dir():
+        shutil.rmtree(target_dir)
         return True
-    else:
-        return False    
-    
+        
+    return False
+
 
 def removeFromDB(uuid):
     con = sl.connect(DATA_LOCATION + '/datastories.db')
@@ -359,6 +379,10 @@ def removeFromDB(uuid):
     con.close()
 
     return True
+
+
+
+
 
 def updateModifiedDate(unique_id, title):
     now = datetime.now(tz=ZoneInfo("Europe/Amsterdam"))

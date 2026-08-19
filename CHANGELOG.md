@@ -3,6 +3,7 @@
 
 ## 19-8-2026
  
+- delete endpoint safe, whitelist, uuid type, path traversal check 
 - addes ResourceType queries after I encouterd this in the log `INFO:     127.0.0.1:51837 - "GET /resources/168475ff-7055-4cf0-b1ec-19cd83641f4d/queries/wrak.rq HTTP/1.1" 422 Unprocessable Content`
 
 

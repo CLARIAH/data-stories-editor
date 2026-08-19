@@ -1,7 +1,7 @@
 import json
 from typing import Union, Annotated
 import uvicorn
-from fastapi import FastAPI, File, Form, UploadFile, HTTPException, Depends, Body
+from fastapi import FastAPI, File, Form, UploadFile, HTTPException, Depends, Body, status
 from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
 from auth import router as auth_router
 from starlette.requests import Request
@@ -98,15 +98,43 @@ def create_new(userdata: Annotated[dict | None, Depends(authenticated_user)]):
         return response
 
 @app.get("/delete")
-def delete(ds: str):
-    if deleteDataStoryFolder(ds):
+def delete(ds: UUID):
+    listUUIDS = getListUUIDs()
+    print(listUUIDS)
+    if not str(ds) in listUUIDS:
+        # print('zit er niet in')
+        return {"status": "uuid not available"}    
+    if deleteDataStoryFolder(str(ds)):
         status = 'OK'
     else:
         status = 'DATASTORY NOT FOUND'
 
-    removeFromDB(ds) # nog even goed naar kijken of dit nu klopt
+    removeFromDB(str(ds)) # nog even goed naar kijken of dit nu klopt
     response = {"status": status}
     return response
+
+# @app.delete("/datastory/{ds_id}")
+# def delete_data_story(ds_id: str):
+#     # 1. Check DB first (or do this inside a transaction)
+#     # if not db_exists(ds_id):
+#     #     raise HTTPException(status_code=404, detail="Data story not found")
+
+#     # 2. Delete folder
+#     deleted = deleteDataStoryFolder(ds_id)
+    
+#     if not deleted:
+#         raise HTTPException(
+#         status_code=404, 
+#         detail="Data story folder not found"
+#     )
+
+#     # 3. Clean up DB only after successful folder deletion
+#     removeFromDB(ds_id)
+#     print("deleted", ds_id)
+#     return {"status": "OK", "id": ds_id}
+
+
+
 
 # datastory is de inhoud van de json file, ik hoef geen structuur te parsen
 @app.get("/get_item")
