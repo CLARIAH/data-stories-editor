@@ -1,5 +1,11 @@
 # Changelog MvdP
 
+## 20-8-2026
+
+- improved getNewId()
+- looked into REST practices in relation to fastAPI, not implemented here TODO (after discussion)
+- small cleanups
+- started with REST on the delete endpoint also change in frontend src/frontend/src/browser/browserHome.tsx
 
 ## 19-8-2026
  

@@ -97,42 +97,49 @@ def create_new(userdata: Annotated[dict | None, Depends(authenticated_user)]):
         response = {"datastory_id": id}
         return response
 
-@app.get("/delete")
+# @app.get("/delete")
+# def delete(ds: UUID):
+#     listUUIDS = getListUUIDs()
+#     print(listUUIDS)
+#     if not str(ds) in listUUIDS:
+#         return {"status": "uuid not available"}    
+#     if deleteDataStoryFolder(str(ds)):
+#         status = 'OK'
+#     else:
+#         status = 'DATASTORY NOT FOUND'
+
+#     removeFromDB(str(ds)) # nog even goed naar kijken of dit nu klopt
+#     response = {"status": status}
+#     return response
+
+
+# DELETE a DATASTORY rewritten in proper REST
+
+@app.delete("/delete/{ds}")
 def delete(ds: UUID):
+    ds_str = str(ds)
+
     listUUIDS = getListUUIDs()
-    print(listUUIDS)
-    if not str(ds) in listUUIDS:
-        # print('zit er niet in')
-        return {"status": "uuid not available"}    
-    if deleteDataStoryFolder(str(ds)):
-        status = 'OK'
-    else:
-        status = 'DATASTORY NOT FOUND'
+    # print(listUUIDS)
 
-    removeFromDB(str(ds)) # nog even goed naar kijken of dit nu klopt
-    response = {"status": status}
-    return response
+    if ds_str not in listUUIDS:
+        raise HTTPException(
+            status_code=404,
+            detail="UUID not available"
+        )
 
-# @app.delete("/datastory/{ds_id}")
-# def delete_data_story(ds_id: str):
-#     # 1. Check DB first (or do this inside a transaction)
-#     # if not db_exists(ds_id):
-#     #     raise HTTPException(status_code=404, detail="Data story not found")
+    if not deleteDataStoryFolder(ds_str):
+        raise HTTPException(
+            status_code=404,
+            detail="Data story not found"
+        )
 
-#     # 2. Delete folder
-#     deleted = deleteDataStoryFolder(ds_id)
-    
-#     if not deleted:
-#         raise HTTPException(
-#         status_code=404, 
-#         detail="Data story folder not found"
-#     )
+    removeFromDB(ds_str)
 
-#     # 3. Clean up DB only after successful folder deletion
-#     removeFromDB(ds_id)
-#     print("deleted", ds_id)
-#     return {"status": "OK", "id": ds_id}
-
+    return {
+        "status": "OK",
+        "uuid": ds_str
+    }
 
 
 
@@ -173,7 +180,7 @@ async def updateDataStory(request: Request):
     datastory_id = data["datastory_id"]
     datastory_title = data["datastory_title"]
     datastory = data["datastory_file"]
-    print(json.dumps(datastory, indent=4, ensure_ascii=False))
+    # print(json.dumps(datastory, indent=4, ensure_ascii=False))
     # even if you save one element from one block in the interface, the whole datastory is saved as a json structure
 
     # save the content to file
@@ -197,7 +204,7 @@ async def updateDataStory(request: Request):
 #     session['user'] = "Rob Zeeman"
 #     return(jsonify({"status": "ok", "logged_in": session.get('logged_in')}))
 
-# Question worden de uuid's gemaakt aan de client kant?
+# Question worden de uuid's gemaakt aan de client kant? Nee. Bij de eerste datastory create_new
 @app.post('/upload')
 async def upload(file: UploadFile, uuid: str = Form(...)):
     if not file:

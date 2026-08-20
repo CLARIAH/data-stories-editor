@@ -293,7 +293,7 @@ def tooManyStories(max):
     else:
         return False
 
-def getNewId(auth_status):
+def getNewId_old(auth_status):
     # maakt gebruik van een sql lite database voor gegarandeerde oplopende unieke ids
     unique_id = str(uuid.uuid4()) # kan misschien ook als database functie
     status = 'draft' # dubbelop?
@@ -323,6 +323,32 @@ def getNewId(auth_status):
     cur.close()
     con.close()
     return result[0][1]
+
+
+def getNewId(auth_status):
+    unique_id = str(uuid.uuid4())
+    print('new')
+    sql = """
+        INSERT INTO stories
+            (status, uuid, owner, eppn, title, groep, created, modified)
+        VALUES (?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))
+    """
+
+    values = (
+        'D',
+        unique_id,
+        auth_status["user"],
+        auth_status["eppn"],
+        '[UNTITLED]',
+        'HuC'
+    )
+
+    with sl.connect(DATA_LOCATION + '/datastories.db') as con:
+        con.execute(sql, values)
+
+    return unique_id
+
+
 
 def createDataStoryFolder(id, template):
     # misschien ook een eens hiernaar kijken https://stackoverflow.com/questions/273192/how-do-i-create-a-directory-and-any-missing-parent-directories
