@@ -116,7 +116,7 @@ def create_new(userdata: Annotated[dict | None, Depends(authenticated_user)]):
 # DELETE a DATASTORY rewritten in proper REST
 
 @app.delete("/delete/{ds}")
-def delete(ds: UUID):
+def delete(ds: UUID, userdata: Annotated[dict | None, Depends(authenticated_user)]):
     ds_str = str(ds)
 
     listUUIDS = getListUUIDs()
@@ -144,7 +144,8 @@ def delete(ds: UUID):
 
 
 # datastory is de inhoud van de json file, ik hoef geen structuur te parsen
-@app.get("/get_item")
+
+@app.get("/get_item/ds={ds}")
 async def get_item(ds: str, userdata: Annotated[dict | None, Depends(authenticated_user)]):
     datastory = {}
     uuid = ds

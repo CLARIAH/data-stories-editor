@@ -1,6 +1,14 @@
 # Changelog MvdP
 
+
+## 21-8-2026
+
+- pytest start and fastAPI 
+- discussion about rest and more of the application flow (visitors, rights)
+- from API to IPA
+
 ## 20-8-2026
+
 
 - improved getNewId()
 - looked into REST practices in relation to fastAPI, not implemented here TODO (after discussion)

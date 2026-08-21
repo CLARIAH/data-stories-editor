@@ -25,9 +25,9 @@ FRONTEND_PID=$!
 
 # 2. Open Firefox to your docs page in the background
 echo "Opening documentation in Firefox..."
-open -a "Firefox" "http://localhost:80/docs" 
-open -a "Firefox" "http://localhost:80/get_data_stories" 
-
+# open -a "Firefox" "http://localhost:80/docs" 
+# open -a "Firefox" "http://localhost:80/get_data_stories" 
+open -a Firefox
 
 # 3. Start Service in the foreground (showing logs directly)
 echo "Starting Service..."
