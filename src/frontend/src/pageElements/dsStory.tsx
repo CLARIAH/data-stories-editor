@@ -3,6 +3,7 @@ import {useState, useEffect} from "react";
 import {json, useNavigate, useParams} from "react-router-dom";
 import DsStoryBlock from "./dsStoryBlock";
 import DsEditor from "./dsEditor";
+import AdminMessage from "./adminMessage";
 import YasguiBlock from "./yasguiBlock";
 import {API_URL} from "../misc/functions";
 import {VIEW} from "../misc/functions";
@@ -32,6 +33,7 @@ function Story() {
     const [canComment, setCanComment] = useState(false);
     const [writing, setWriting] = useState(false);
     const [writeStory, setWriteStory] = useState(true);
+
 
     //console.log('currentDataStory', currentDataStory);
 
@@ -152,7 +154,7 @@ function Story() {
     return (
         <>
 
-
+            <AdminMessage/>
             <div className="dataStoryBlocks">
 
 
