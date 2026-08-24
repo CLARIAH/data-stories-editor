@@ -13,6 +13,7 @@ font-size: smaller;
 display: block;
 margin-bottom: 14px;
 padding: 4px 30px;
+cursor: pointer;
 }
 
 .userMessageSwitchOff {
