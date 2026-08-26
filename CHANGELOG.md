@@ -2,8 +2,12 @@
 
 ## 26-8-2026
 
-- pytest verder
-- REST verder
+
+- I noticed the docs/ didn't show up when I worked offline, since Swagger uses network resources you end up with a blank page. Solution. `pip install fastapi-offline`  `from fastapi_offline import FastAPIOffline` `Replace app = FastAPI()`
+with `app = FastAPIOffline()` https://pypi.org/project/fastapi-offline/
+- pytest working
+- REST working
+- proper delete
 
 
 ## 21-8-2026

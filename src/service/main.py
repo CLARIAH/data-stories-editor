@@ -3,6 +3,9 @@ from typing import Union, Annotated
 import uvicorn
 from fastapi import FastAPI, File, Form, UploadFile, HTTPException, Depends, Body, status
 from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
+
+from fastapi_offline import FastAPIOffline
+
 from auth import router as auth_router
 from starlette.requests import Request
 from starlette.middleware.cors import CORSMiddleware
@@ -28,6 +31,7 @@ from uuid import UUID
 import os
 
 app = FastAPI()
+# app = FastAPIOffline()
 
 app.add_middleware(SessionMiddleware, secret_key='dkhkajhdlkhdkkk')
 app.add_middleware(CORSMiddleware, allow_origins=[ds_app_url], allow_credentials=True, allow_methods=['*'], allow_headers=['*'])
@@ -113,9 +117,9 @@ def create_new(userdata: Annotated[dict | None, Depends(authenticated_user)]):
 #     return response
 
 
-# DELETE a DATASTORY rewritten in proper REST
+# DELETE a DATASTORY rewritten again in proper REST
 
-@app.delete("/delete/{ds}")
+@app.delete("/datastory/{ds}")
 def delete(ds: UUID, userdata: Annotated[dict | None, Depends(authenticated_user)]):
     ds_str = str(ds)
 

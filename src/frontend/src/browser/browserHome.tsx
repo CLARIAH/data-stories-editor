@@ -45,7 +45,7 @@ function BrowserHome() {
         if (window.confirm("Delete datastory?") === true) {
             // const response = await fetch(API_URL + 'delete?ds=' + uuid);
 
-            const response = await fetch(API_URL + 'delete/' + uuid, {
+            const response = await fetch(API_URL + 'datastory/' + uuid, {
             method: 'DELETE'
             });
 
