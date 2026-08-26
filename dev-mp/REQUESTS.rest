@@ -14,12 +14,8 @@ POST http://localhost/update_datastory
 Content-type: application/json
 
 {
-    "datastory_id": "c568ba14-a92f-47e2-b98f-9923d93a80b1",
-    "testding" : "abracadabra",
-    "datastory": {
-        "title": "klootzak",
-        "owner": "Rob"
-    }
+    "uuid": "ec6676ff-b817-4acc-878d-a9789fe20016",
+    "title" : "abracadabra"
 
 
 }

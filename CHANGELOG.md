@@ -1,5 +1,10 @@
 # Changelog MvdP
 
+## 26-8-2026
+
+- pytest verder
+- REST verder
+
 
 ## 21-8-2026
 
