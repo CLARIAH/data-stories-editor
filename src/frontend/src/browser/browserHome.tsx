@@ -19,7 +19,7 @@ function BrowserHome() {
     const navigate = useNavigate();
 
     async function fetchData() {
-        const response = await fetch(API_URL + "get_data_stories");
+        const response = await fetch(API_URL + "datastories");
         const json = await response.json();
         setData(json);
         if (json.auth.logged_in === 'yes') {
@@ -45,7 +45,7 @@ function BrowserHome() {
         if (window.confirm("Delete datastory?") === true) {
             // const response = await fetch(API_URL + 'delete?ds=' + uuid);
 
-            const response = await fetch(API_URL + 'datastory/' + uuid, {
+            const response = await fetch(API_URL + 'datastories/' + uuid, {
             method: 'DELETE'
             });
 
@@ -59,7 +59,11 @@ function BrowserHome() {
     }
 
     async function createDataStory() {
-        const response = await fetch(API_URL + 'create_new');
+        // const response = await fetch(API_URL + 'create_new');
+        const response = await fetch(API_URL + 'datastories',  {
+            method: 'POST'
+        });
+
         const json = await response.json();
         if (json.datastory_id !== undefined) {
             navigate(0);

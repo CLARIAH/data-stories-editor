@@ -86,7 +86,22 @@ def revoke_rights(ds: str, eppn: str, userdata: Annotated[dict | None, Depends(a
         revoke_user_rights(ds, eppn)
     return {"status": "OK"}
 
-@app.get("/create_new")
+# @app.get("/create_new")
+# def create_new(userdata: Annotated[dict | None, Depends(authenticated_user)]):
+#     user_status = get_auth_status(userdata)
+#     max = 100 # maximaal 100 datastories
+#     if tooManyStories(max) or user_status["logged_in"] == "no":
+#         response = {"status": 'ff aan de rem getrokken'}
+#         return response
+
+#     id = getNewId(user_status)
+#     status = createDataStoryFolder(id, template)
+#     if status == True:
+#         # stringie = 'I created something new! De unieke id is: ' + str(id)
+#         response = {"datastory_id": id}
+#         return response
+
+@app.post("/datastories")
 def create_new(userdata: Annotated[dict | None, Depends(authenticated_user)]):
     user_status = get_auth_status(userdata)
     max = 100 # maximaal 100 datastories
@@ -100,6 +115,8 @@ def create_new(userdata: Annotated[dict | None, Depends(authenticated_user)]):
         # stringie = 'I created something new! De unieke id is: ' + str(id)
         response = {"datastory_id": id}
         return response
+
+
 
 # @app.get("/delete")
 # def delete(ds: UUID):
@@ -119,7 +136,7 @@ def create_new(userdata: Annotated[dict | None, Depends(authenticated_user)]):
 
 # DELETE a DATASTORY rewritten again in proper REST
 
-@app.delete("/datastory/{ds}")
+@app.delete("/datastories/{ds}")
 def delete(ds: UUID, userdata: Annotated[dict | None, Depends(authenticated_user)]):
     ds_str = str(ds)
 
@@ -146,10 +163,26 @@ def delete(ds: UUID, userdata: Annotated[dict | None, Depends(authenticated_user
     }
 
 
+# # datastory is de inhoud van de json file, ik hoef geen structuur te parsen
+# @app.get("/get_item")
+# async def get_item(ds: str, userdata: Annotated[dict | None, Depends(authenticated_user)]):
+#     datastory = {}
+#     uuid = ds
+#     status = get_auth_status(userdata)
+#     status["rights"] = get_item_rights(uuid, status)
+#     #print('uuid', uuid)
+#     if not uuid:
+#         status = 'INVALID REQUEST, NO UUID'
 
-# datastory is de inhoud van de json file, ik hoef geen structuur te parsen
+#     else:
+#         datastory = getDataStory(uuid) # kan empty zijn
 
-@app.get("/get_item/ds={ds}")
+#     response = {"status": status, "datastory": datastory}
+#     return response
+
+
+# een datastory is een complete json file, ik hoef geen structuur te parsen
+@app.get("/datastories/{ds}")
 async def get_item(ds: str, userdata: Annotated[dict | None, Depends(authenticated_user)]):
     datastory = {}
     uuid = ds
@@ -166,8 +199,22 @@ async def get_item(ds: str, userdata: Annotated[dict | None, Depends(authenticat
     return response
 
 
+
+
 # hier moet de sqllite database bevraagd worden, om de lijstpagina te genereren
-@app.get("/get_data_stories")
+# @app.get("/get_data_stories")
+# async def getDataStories(userdata: Annotated[dict | None, Depends(authenticated_user)]):
+#     status = 'OK'
+#     # print('hier')
+#     auth_status = get_auth_status(userdata)
+#     structure = getDataStoriesDB(auth_status)
+#     message = get_message()
+#     response = {"status": status, "auth": auth_status, "structure": structure, "message": message}
+#     # print(json.dumps(response, indent=4, ensure_ascii=False))
+#     return response
+
+# hier moet de sqllite database bevraagd worden, om de lijstpagina te genereren
+@app.get("/datastories")
 async def getDataStories(userdata: Annotated[dict | None, Depends(authenticated_user)]):
     status = 'OK'
     # print('hier')
@@ -177,6 +224,7 @@ async def getDataStories(userdata: Annotated[dict | None, Depends(authenticated_
     response = {"status": status, "auth": auth_status, "structure": structure, "message": message}
     # print(json.dumps(response, indent=4, ensure_ascii=False))
     return response
+
 
 
 @app.post("/update_datastory")
