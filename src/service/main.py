@@ -227,10 +227,32 @@ async def getDataStories(userdata: Annotated[dict | None, Depends(authenticated_
 
 
 
-@app.post("/update_datastory")
-async def updateDataStory(request: Request):
+# @app.post("/update_datastory")
+# async def updateDataStory(request: Request):
+#     data = await request.json()
+#     datastory_id = data["datastory_id"]
+#     datastory_title = data["datastory_title"]
+#     datastory = data["datastory_file"]
+#     # print(json.dumps(datastory, indent=4, ensure_ascii=False))
+#     # even if you save one element from one block in the interface, the whole datastory is saved as a json structure
+
+#     # save the content to file
+#     #path = "data/" + str(datastory_id) + "/datastory.json"
+
+#     #with open(path, 'w') as f:
+#     #    json.dump(datastory, f)
+#     saveDataStory(datastory_id, datastory)
+#     updateModifiedDate(datastory_id, datastory_title)
+
+#     return {"status": "OK"}
+
+
+
+@app.put("/datastories/{ds}")
+async def updateDataStory(ds:UUID, request: Request):
     data = await request.json()
-    datastory_id = data["datastory_id"]
+    # datastory_id = data["datastory_id"]
+    datastory_id = str(ds)
     datastory_title = data["datastory_title"]
     datastory = data["datastory_file"]
     # print(json.dumps(datastory, indent=4, ensure_ascii=False))

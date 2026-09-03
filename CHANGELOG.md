@@ -1,5 +1,12 @@
 # Changelog MvdP
 
+
+## 3-9-2026
+
+- update `@app.post("/update_datastory")` => `@app.put("/datastories/{ds}")`
+
+
+
 ## 26-8-2026
 
 
