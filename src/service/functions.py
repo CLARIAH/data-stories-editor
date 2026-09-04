@@ -449,6 +449,24 @@ def getDataStory(uuid):
     return datastory
 
 
+def datastory_exists_in_db(datastory_id: str) -> bool:
+    print('ja hier')
+    conn = sl.connect(DATA_LOCATION + '/datastories.db')
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT 1 FROM stories WHERE id LIKE ? LIMIT 1",
+        (datastory_id,)
+    )
+
+    result = cursor.fetchone()
+    print('query result:', result)
+
+    conn.close()
+    return 1
+    # return result is not None
+
+
 
 def saveDataStory(datastory_id, datastory):
     path = DATA_LOCATION + "/" + str(datastory_id) + "/datastory.json"

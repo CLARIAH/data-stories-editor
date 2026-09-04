@@ -1,10 +1,13 @@
 # Changelog MvdP
 
 
+## 4-9-2026
+
+- upload van een resource  `@app.post('/upload')` =>     `@app.post("/datastories/{datastory_id}/resources")`
+
 ## 3-9-2026
 
 - update `@app.post("/update_datastory")` => `@app.put("/datastories/{ds}")`
-
 
 
 ## 26-8-2026

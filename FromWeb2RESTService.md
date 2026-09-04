@@ -33,3 +33,12 @@ async def updateDataStory(request: Request):
 
 @app.put("/datastories/{ds}")
 async def updateDataStory(ds:UUID, request: Request):
+
+
+@app.post('/upload')
+async def upload(file: UploadFile, uuid: str = Form(...)):
+
+@app.post("/datastories/{datastory_id}/resources")
+async def upload_resource(datastory_id: UUID, file: UploadFile = File(...)):
+
+

@@ -359,13 +359,12 @@ function DsEditor({
 
     async function saveStory() {
         const ds = {
-            datastory_id: uuid,
             datastory_title: dataStoryData['ds:DataStory']['ds:Metadata']['dct:title'][0]['_text'],
             datastory_file: dataStoryData
         }
         setWriting(true);
-        const response = await fetch(API_URL + 'update_datastory', {
-            method: 'POST',
+        const response = await fetch(API_URL + 'datastories/' + uuid, {
+            method: 'PUT',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -378,6 +377,9 @@ function DsEditor({
             setWriting(false);
         }
     }
+
+
+
 
     function addProv() {
         let provObj = dataStoryData['ds:DataStory']['ds:Story']['ds:Block'][findBlockById(currentEditBlock['block_id'])]["ds:Provenance"]

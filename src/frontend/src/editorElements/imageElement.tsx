@@ -29,29 +29,67 @@ function ImageElement({block, changeStyle, setCurrentEditBlock, uuid, writeStory
 
 
 
-    function saveBlock() {
-        if (file) {
-            const formData = new FormData();
-            formData.append('file', file);
-            formData.append('uuid', uuid);
-            fetch(API_URL + 'upload', {
-                method: 'POST',
-                body: formData,
+    // function saveBlock() {
+    //     if (file) {
+    //         const formData = new FormData();
+    //         formData.append('file', file);
+    //         // formData.append('uuid', uuid);
+    //         fetch(API_URL + 'upload', {
+    //             method: 'POST',
+    //             body: formData,
+    //         })
+    //             .then((res) => res.json())
+    //             .then((data) => {
+    //                 setUrl(API_URL + "resources/" + uuid + "/images/" + file.name)
+    //                 writeToBlock(API_URL + "resources/" + uuid + "/images/" + file.name, caption);
+    //             })
+    //             .catch((err) => console.error(err));
+    //     } else {
+    //         if (url !== "") {
+    //            writeToBlock(url, caption);
+    //         } else {
+    //             alert("No image added!");
+    //         }
+    //     }
+    // }
+
+function saveBlock() {
+
+    if (file) {
+
+        const formData = new FormData();
+
+        formData.append('file', file);
+
+        fetch(API_URL + "datastories/" + uuid + "/resources", {
+            method: 'POST',
+            body: formData,
+        })
+            .then((res) => res.json())
+            .then((data) => {
+
+                const resourceUrl =
+                    API_URL + "resources/" + uuid + "/images/" + file.name;
+
+                setUrl(resourceUrl);
+
+                writeToBlock(resourceUrl, caption);
             })
-                .then((res) => res.json())
-                .then((data) => {
-                    setUrl(API_URL + "resources/" + uuid + "/images/" + file.name)
-                    writeToBlock(API_URL + "resources/" + uuid + "/images/" + file.name, caption);
-                })
-                .catch((err) => console.error(err));
+            .catch((err) => console.error(err));
+
+    } else {
+
+        if (url !== "") {
+            writeToBlock(url, caption);
         } else {
-            if (url !== "") {
-               writeToBlock(url, caption);
-            } else {
-                alert("No image added!");
-            }
+            alert("No image added!");
         }
+
     }
+}
+
+
+
 
     function writeToBlock(wUrl, wCaption) {
         block["_attributes"]["href"] = wUrl;

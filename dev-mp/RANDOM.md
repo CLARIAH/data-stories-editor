@@ -28,3 +28,47 @@ Each data story contains:
 
 - rest client in VS Code, does still work with my old .rest files
 - Bruno open source alternative for Postman, everything keeps local
+
+
+## kladje
+
+```javascript
+    function saveBlock() {
+        if (file) {
+            const formData = new FormData();
+            formData.append("file", file);
+
+            fetch(API_URL + "datastories/" + uuid + "/resources", {
+                method: "POST",
+                body: formData,
+            })
+                .then((res) => {
+                    if (!res.ok) {
+                        throw new Error(`Upload failed: ${res.status}`);
+                    }
+
+                    return res.json();
+                })
+                .then((data) => {
+                    if (data.status !== "OK") {
+                        throw new Error(data.detail || "Upload failed");
+                    }
+
+                    const resourceUrl = API_URL + data.url;
+
+                    setUrl(resourceUrl);
+                    writeToBlock(resourceUrl, caption);
+                })
+                .catch((err) => {
+                    console.error("Upload error:", err);
+                    alert("Could not upload the image.");
+                });
+        } else {
+            if (url !== "") {
+                writeToBlock(url, caption);
+            } else {
+                alert("No image added!");
+            }
+        }
+    }
+```
