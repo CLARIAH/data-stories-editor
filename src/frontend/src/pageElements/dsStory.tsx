@@ -50,7 +50,7 @@ function Story() {
         // const response = await fetch(API_URL + 'get_item?ds=' + store);
 
         const response = await fetch(API_URL + 'datastories/' + store);
-
+        // console.log('response', response);
         const json = await response.json();
         setDataStoryData(json["datastory"]);
         setDataElements(json["datastory"]);

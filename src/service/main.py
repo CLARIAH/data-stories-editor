@@ -26,6 +26,8 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from config import DATA_LOCATION, ds_app_url, DEV_MODE
 from pathlib import Path
 from uuid import UUID
+from enum import Enum
+
 
 import os
 
@@ -326,17 +328,41 @@ async def resources(uuid: UUID, resourcetype: ResourceType, filename: str):
 
     return FileResponse(filepath)
 
-    # # read from file serve right mimetype
-    # print(filepath)
-    # status = 'OK'
-    # return json.dumps(status)
 
-# @app.get("/{path:path}")
-# async def frontend_handler(path: str):
-#     fp = Path("static") / path
-#     if not fp.exists() or not fp.is_file():
-#         fp = Path("static") / "index.html"
-#     return FileResponse(fp)
+
+
+
+@app.get("/datastories/{ds}/resources/{resourcetype}/{filename}")
+async def get_datastory_resource(ds: UUID, resourcetype: ResourceType, filename: str):
+    base_dir = Path(DATA_LOCATION).resolve()
+    
+    # prevent simple directory traversal
+    safe_filename = Path(filename).name
+    if not safe_filename or safe_filename in (".", ".."):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, 
+            detail="Invalid filename"
+        )
+
+    file_path = (base_dir / str(ds) / "resources" / resourcetype.value / safe_filename).resolve()
+
+    # Prevent directory traversal
+    if not file_path.is_relative_to(base_dir):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, 
+            detail="Access denied"
+        )
+
+    if not file_path.is_file():
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, 
+            detail="Resource not found"
+        )
+
+    # 5. FastAPI automatically sets media type
+    return FileResponse(path=file_path)
+
+
 
 def get_auth_status(user):
     #return {"logged_in": "yes", "user": "Rob Zeeman", "eppn": "3cc036843bde09c86580da2d3d753a527d1e8bfa"}
