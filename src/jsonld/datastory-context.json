@@ -1,0 +1,89 @@
+{
+  "@context": {
+    "@version": 1.1,
+
+    "ds": "https://stories.clariah.nl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+
+    "id": "@id",
+    "type": "@type",
+
+    "@vocab": "https://stories.clariah.nl#",
+    "@base": "https://stories.clariah.nl/story/",
+
+    "DataStory": "ds:DataStory",
+    "Block": "ds:Block",
+    "Comment": "ds:Comment",
+    "Run": "ds:Run",
+
+    "metadata": "@nest",
+    "provenance": "@nest",
+
+    "blocks": {
+      "@id": "ds:hasBlock",
+      "@container": "@list"
+    },
+
+    "kind": {
+      "@id": "ds:kind",
+      "@type": "@vocab"
+    },
+
+    "href": {
+      "@id": "ds:href",
+      "@type": "@id"
+    },
+
+    "ref": {
+      "@id": "ds:ref",
+      "@type": "@id"
+    },
+
+    "when": {
+      "@id": "ds:when",
+      "@type": "xsd:dateTime"
+    },
+
+    "cues": {
+      "@id": "ds:cue",
+      "@container": "@set",
+      "@context": {
+        "cueType": {
+          "@id": "ds:cueType",
+          "@type": "@vocab"
+        },
+
+        "data": {
+          "@id": "ds:data",
+          "@type": "@json"
+        }
+      }
+    },
+
+    "comments": {
+      "@id": "ds:comment",
+      "@container": "@set",
+      "@context": {
+        "date": {
+          "@id": "ds:date",
+          "@type": "xsd:dateTime"
+        },
+
+        "comment": {
+          "@id": "ds:body"
+        }
+      }
+    },
+
+    "runs": {
+      "@id": "ds:runs",
+      "@container": "@set",
+      "@context": {
+        "resources": {
+          "@id": "ds:resources",
+          "@type": "@id"
+        }
+      }
+    }
+  }
+}

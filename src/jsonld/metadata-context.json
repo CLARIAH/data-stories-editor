@@ -1,0 +1,121 @@
+{
+  "@context": {
+    "@version": 1.1,
+
+    "id": "@id",
+    "type": "@type",
+
+    "ds": "https://stories.clariah.nl#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "foaf": "http://xmlns.com/foaf/0.1/",
+
+    "@vocab": "http://purl.org/dc/terms/",
+
+    "Person": "foaf:Person",
+    "Organization": "foaf:Organization",
+    "Agent": "foaf:Agent",
+
+    "name": "foaf:name",
+    "givenName": "foaf:givenName",
+    "familyName": "foaf:familyName",
+
+    "creator": {
+      "@type": "@id"
+    },
+
+    "contributor": {
+      "@type": "@id"
+    },
+
+    "publisher": {
+      "@type": "@id"
+    },
+
+    "rightsHolder": {
+      "@type": "@id"
+    },
+
+    "isPartOf": {
+      "@type": "@id"
+    },
+
+    "hasPart": {
+      "@type": "@id"
+    },
+
+    "isVersionOf": {
+      "@type": "@id"
+    },
+
+    "hasVersion": {
+      "@type": "@id"
+    },
+
+    "isFormatOf": {
+      "@type": "@id"
+    },
+
+    "hasFormat": {
+      "@type": "@id"
+    },
+
+    "references": {
+      "@type": "@id"
+    },
+
+    "isReferencedBy": {
+      "@type": "@id"
+    },
+
+    "conformsTo": {
+      "@type": "@id"
+    },
+
+    "source": {
+      "@type": "@id"
+    },
+
+    "subject": {
+      "@type": "@id"
+    },
+
+    "language": {
+      "@type": "@id"
+    },
+
+    "spatial": {
+      "@type": "@id"
+    },
+
+    "license": {
+      "@type": "@id"
+    },
+
+    "created": {
+      "@type": "xsd:date"
+    },
+
+    "modified": {
+      "@type": "xsd:date"
+    },
+
+    "issued": {
+      "@type": "xsd:date"
+    },
+
+    "homepage": {
+      "@id": "foaf:homepage",
+      "@type": "@id"
+    },
+
+    "endpoint": {
+      "@id": "ds:endpoint",
+      "@type": "@id"
+    },
+
+    "landingPage": {
+      "@id": "ds:landingPage",
+      "@type": "@id"
+    }
+  }
+}

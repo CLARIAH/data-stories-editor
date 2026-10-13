@@ -1,0 +1,388 @@
+{
+  "@context": "datastory",
+  "id": "6ccfaa8e-e380-4732-96a4-09cd6c887ebe",
+  "type": "DataStory",
+  "metadata": {
+    "@context": "metadata",
+    "contributor": "Rob Zeeman",
+    "creator": [
+      "Ruben Schalk",
+      "Rick Mourits",
+      "Ingrid van Dijk",
+      "Auke Rijpma",
+      "Richard Zijdeman"
+    ],
+    "license": "http://creativecommons.org/licenses/by-sa/4.0/",
+    "title": "The 1918-19 flu epidemic in The Netherlands",
+    "endpoint": "https://druid.datalegend.net/dataLegend/deaths-1910-1920/sparql/deaths-1910-1920",
+    "landingPage": "https://stories.datalegend.net/spanishFluNetherlands/"
+  },
+  "blocks": [
+    {
+      "id": "6ccfaa8e-e380-4732-96a4-09cd6c887ebe/b1",
+      "type": "Block",
+      "kind": "Text",
+      "mime": "text/markdown",
+      "content": "Thanks to the indexation efforts of archives and the [LINKS\n            project](https://iisg.amsterdam/en/hsn/projects/links), large parts of the Dutch civil\n            registry (_'Burgerlijke Stand'_) are now becoming available for historians. The death\n            certificates used here are retrieved from [openarch.nl](https://www.openarch.nl/)\n            (available [here](https://www.openarch.nl/exports/5cfb55ebaf9fe5aaf216f6da1229c632/)).\n            From the individual death certificates files per archive, one combined dataset was\n            created. One challenge of working with these certificates is that that the same\n            certificate may have been indexed by more than one archive. These were de-duplicated\n            using a combination of date of death, location and similar full names (using string\n            distances). Key variables were subsequently cleaned and standardized, such as age at\n            death, placenames, and occupations. Using different string match combinations, place\n            names were standardized against the [Historical Dutch Toponyms\n            dataset](https://iisg.amsterdam/en/hsn/data/place-names), to retrieve coordinates and\n            Amsterdam Codes. Occupations were matched against the file [HSN\n            Occupations](https://iisg.amsterdam/en/hsn/data/occupations) to retrieve HISCO, HISCLASS\n            and HISCAM categorizations. All related R scripts can be found at our [Github\n            repository](https://github.com/CLARIAH/wp4-civreg). The dataset was then converted into\n            Linked Data with [COW](https://github.com/CLARIAH/COW), using the \"Persons table\"\n            datamodel designed by Gerrit Bloothooft and Kees Mandemakers in the LINKS project. The\n            complete Linked Dataset and the related metadata scheme can be explored at\n            [Druid](https://druid.datalegend.net/dataLegend/deaths-1910-1920/) The table below\n            demonstrates the success of the standardization efforts, presented as Linked Data.",
+      "cues": [
+        {
+          "type": "title-prologue",
+          "data": {
+            "cueType": "template",
+            "template": "# I. {$ds-Block/dct:title}"
+          }
+        }
+      ],
+      "metadata": {
+        "@context": "metadata",
+        "title": "The dataset"
+      }
+    },
+    {
+      "id": "6ccfaa8e-e380-4732-96a4-09cd6c887ebe/b2",
+      "type": "Block",
+      "kind": "Query",
+      "mime": "application/sparql-query",
+      "href": "queries/standardization_share.rq",
+      "metadata": {
+        "@context": "metadata",
+        "title": "Share of death certificates with standardized places of death and occupations:"
+      }
+    },
+    {
+      "id": "6ccfaa8e-e380-4732-96a4-09cd6c887ebe/b3",
+      "type": "Block",
+      "kind": "Text",
+      "mime": "text/markdown",
+      "content": " _Sources:_ Gerrit Bloothooft &           Kees Mandemakers, _[The Zeeland           Challenge](http://www.gerritbloothooft.nl/Publications/The%20Zeeland%20Challenge%20v2-2.pdf)_,           document for benchmark, presented at workshop Data Linkage: Techniques, Challenges and           Applications at Isaac NewtoInstitute for Mathematics, Cambridge, UK, 15 September           2016; VaLeeuwen, M. H. D. , Maas, I. & Miles, A. (2003). _HISCO: Historical           International Standard Classificatioof Occupations_. Leuven: LeuveUniversity Press;           Zijdeman, R., & Lambert, P. (2010). _Measuring social structure ithe past: A           comparisoof historical class schemes and occupational stratificatioscales oDutch           19th and early 20th century data_. Journal of BelgiaHistory/Belgisch Tijdschrift voor           Nieuwste Geschiedenis/Revue Belge de Histoire Contemporaine, 40(1-2), 111-141. "
+    },
+    {
+      "id": "6ccfaa8e-e380-4732-96a4-09cd6c887ebe/b4",
+      "type": "Block",
+      "kind": "Text",
+      "mime": "text/markdown",
+      "content": " Because archives generally decide           for themselves which variables from the civil registry they will index, occupations of           the deceased are not available for all regions. Archives from the provinces of Drenthe,           Gelderland, and Zeeland are, regrettably, the only ones to have structurally indexed all           occupations of the deceased for this period. "
+    },
+    {
+      "id": "6ccfaa8e-e380-4732-96a4-09cd6c887ebe/b5",
+      "type": "Block",
+      "kind": "Query",
+      "mime": "application/sparql-query",
+      "href": "queries/occupation_share.rq",
+      "cues": [
+        {
+          "cueType": "visualisation",
+          "data": {
+            "type": "geo"
+          }
+        }
+      ],
+      "metadata": {
+        "@context": "metadata",
+        "title": "Share of knowoccupations of the deceased, aged eighteeand over, by                   municipality:"
+      }
+    },
+    {
+      "id": "6ccfaa8e-e380-4732-96a4-09cd6c887ebe/b7",
+      "type": "Block",
+      "kind": "Query",
+      "mime": "application/sparql-query",
+      "content": "\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX schema: <http://schema.org/>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX iisgv:  <https://iisg.amsterdam/openarchdeaths1910_1920/vocab/>\nPREFIX iisgv2: <https://iisg.amsterdam/openarchdeath/vocab/>\nPREFIX gg:     <http://www.gemeentegeschiedenis.nl/gg-schema#>\nPREFIX geo:    <http://www.opengis.net/ont/geosparql#>\nPREFIX bio:    <http://purl.org/vocab/bio/0.1/>\n\nSELECT ?month (sum(if(?year = \"1910\"^^<http://www.w3.org/2001/XMLSchema#int>, 1, 0)) as ?1910)\n              (sum(if(?year = \"1913\"^^<http://www.w3.org/2001/XMLSchema#int>, 1, 0)) as ?1913)\n              (sum(if(?year = \"1918\"^^<http://www.w3.org/2001/XMLSchema#int>, 1, 0)) as ?1918)\n              (sum(if(?year = \"1919\"^^<http://www.w3.org/2001/XMLSchema#int>, 1, 0)) as ?1919)\n\n WHERE { ?death a bio:Death .\n         ?death iisgv:deceased ?deceased .\n         ?death bio:date ?date .\n         BIND((month(?date)) as ?month)\n         BIND(year(?date) as ?year)\n       }\n\n ORDER BY ASC (?month) ",
+      "cues": [
+        {
+          "cueType": "visualisation",
+          "data": {
+            "type": "gchart"
+          }
+        },
+        {
+          "cueType": "data-output-config",
+          "data": {
+            "chartConfig": {
+              "options": {
+                "labelField": "month",
+                "dataSets": [
+                  {
+                    "field": "1910",
+                    "color": "rgb(0, 102, 0)",
+                    "fill": true,
+                    "density": 0.1
+                  },
+                  {
+                    "field": "1913",
+                    "color": "rgb(0, 10, 20)",
+                    "fill": true,
+                    "density": 0.1
+                  },
+                  {
+                    "field": "1918",
+                    "color": "rgb(104, 102, 0)",
+                    "fill": true,
+                    "density": 0.1
+                  },
+                  {
+                    "field": "1919",
+                    "color": "rgb(40, 102, 80)",
+                    "fill": true,
+                    "density": 0.1
+                  }
+                ]
+              },
+              "chartType": "LineChart"
+            }
+          }
+        }
+      ],
+      "metadata": {
+        "@context": "metadata",
+        "title": "Total deaths iThe Netherlands by month:"
+      }
+    },
+    {
+      "id": "6ccfaa8e-e380-4732-96a4-09cd6c887ebe/b8",
+      "type": "Block",
+      "kind": "Text",
+      "mime": "text/markdown",
+      "content": " Linking the Amsterdam Codes iour           dataset to those i[Gemeentegeschiedenis](https://www.gemeentegeschiedenis.nl/), as           above, allows to map the spatial distributioof the epidemic. We compared total deaths           by municipality i1918 with the meanumber of deaths during 1910-17. Excess death           rates were divided into three catagories: municipalities with excess death rates below           the meaof 1.38 (light red); those with rates from 1.38 through 1.60 (red); and           municipalities with evehigher excess death rates (dark red). The map suggests hotbeds           of the epidemic iGroningen, Drenthe, and Limburg, with smaller clusters iparts of           North-Brabant and North-Holland. The Achterhoek, the south west of North-Brabant and           Schouwen-Duiveland seem to have beeaffected relatively less severe. By hovering over           the map, the excess death rate and the name of the municipality will show. "
+    },
+    {
+      "id": "6ccfaa8e-e380-4732-96a4-09cd6c887ebe/b9",
+      "type": "Block",
+      "kind": "Query",
+      "mime": "application/sparql-query",
+      "href": "queries/deaths_spatial.rq",
+      "cues": [
+        {
+          "cueType": "visualisation",
+          "data": {
+            "type": "geo"
+          }
+        }
+      ],
+      "metadata": {
+        "@context": "metadata",
+        "title": "Excess mortality i1918:"
+      }
+    },
+    {
+      "id": "6ccfaa8e-e380-4732-96a4-09cd6c887ebe/b10",
+      "type": "Block",
+      "kind": "Text",
+      "mime": "text/markdown",
+      "content": " The next query zooms iothe           excess mortality iNovember 1918, compared to the meadeaths ithe same month between           1910-17. It shows that 's-Hertogenbosch, Finsterwolde, and Harderwijk experienced death           rates well over fifteetimes what was normal. Only nineteeof all 967 municipalities           we have data for experienced below-average mortality rates, and these were mostly caused           by their small size - agaihighlighting the severity of the epidemic. Municipalities           cabe browsed by entering their name ithe searchbar 'Filter query results' just above           the table at the left-hand side, after clicking the blue upward-facing arrow. To put the           municipal rates into context: the overall excess death rate i1918 was about 1.41. "
+    },
+    {
+      "id": "6ccfaa8e-e380-4732-96a4-09cd6c887ebe/b11",
+      "type": "Block",
+      "kind": "Query",
+      "mime": "application/sparql-query",
+      "content": "\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX schema: <http://schema.org/>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX iisgv:  <https://iisg.amsterdam/openarchdeaths1910_1920/vocab/>\nPREFIX iisgv2: <https://iisg.amsterdam/openarchdeath/vocab/>\nPREFIX gg:     <http://www.gemeentegeschiedenis.nl/gg-schema#>\nPREFIX geo:    <http://www.opengis.net/ont/geosparql#>\nPREFIX bio:    <http://purl.org/vocab/bio/0.1/>\nPREFIX bif:     <http://www.openlinksw.com/schemas/bif#>\n\nSELECT ?gg_gemeente ?mean ?1918 ?excess_death_rate\n\n WHERE {\n   FILTER(?mean >1) # to avoid 'division by 0' error\n   FILTER(?1918 >1) FILTER(?month = \"11\"^^xsd:integer) {\n     select ?amco ?wkt ?gg_gemeente ?month\n     (sum(if(?year = \"1918\"^^<http://www.w3.org/2001/XMLSchema#int>, 1, 0)) as ?1918)\n     (sum(if(?year = \"1910\"^^<http://www.w3.org/2001/XMLSchema#int>, 1, 0)) as ?1910)\n     (sum(if(?year = \"1911\"^^<http://www.w3.org/2001/XMLSchema#int>, 1, 0)) as ?1911)\n     (sum(if(?year = \"1912\"^^<http://www.w3.org/2001/XMLSchema#int>, 1, 0)) as ?1912)\n     (sum(if(?year = \"1913\"^^<http://www.w3.org/2001/XMLSchema#int>, 1, 0)) as ?1913)\n     (sum(if(?year = \"1914\"^^<http://www.w3.org/2001/XMLSchema#int>, 1, 0)) as ?1914)\n     (sum(if(?year = \"1915\"^^<http://www.w3.org/2001/XMLSchema#int>, 1, 0)) as ?1915)\n     (sum(if(?year = \"1916\"^^<http://www.w3.org/2001/XMLSchema#int>, 1, 0)) as ?1916)\n     (sum(if(?year = \"1917\"^^<http://www.w3.org/2001/XMLSchema#int>, 1, 0)) as ?1917)\n\n     { ?death a bio:Death .\n       ?death iisgv:deceased ?deceased .\n       ?death bio:date ?date .\n       ?death iisgv:event_location ?gemeente .\n       ?gemeente gg:amsterdamCode ?amco .\n       ?amco gg:identifies ?gg_gemeente .\n       BIND(year(?date) as ?year)\n       BIND(month(?date) as ?month)\n     }\n   }\n   BIND(xsd:float(?1910+?1911+?1912+?1913+?1914+?1915+?1916+?1917)/8 as ?mean)\n   BIND(xsd:float(?1918/?mean) as ?excess_death_rate)\n }\n\n ORDER BY DESC (?excess_death_rate) ",
+      "cues": [
+        {
+          "cueType": "visualisation",
+          "data": {
+            "type": "table"
+          }
+        },
+        {
+          "cueType": "data-output-config",
+          "data": {
+            "pageSize": 10
+          }
+        }
+      ],
+      "metadata": {
+        "@context": "metadata",
+        "title": "Excess mortality iNovember 1918 per municipality:"
+      }
+    },
+    {
+      "id": "6ccfaa8e-e380-4732-96a4-09cd6c887ebe/b12",
+      "type": "Block",
+      "kind": "Text",
+      "mime": "text/markdown",
+      "content": " Icontrast to many other flu outbreaks, it [has been           demonstrated](https://wwwnc.cdc.gov/eid/article/12/1/05-0979-f2) that the 1918-19           epidemic was deadly for young adults iparticular. We cause the age at death to           examine if this holds for The Netherlands as well, and whether this was true during the           wave iNovember 1918 and the first three months of 1919. Surprisingly, only the           November 1918 wave affected young adults i- extremely - large numbers. During the next           outbreak iJanuary-March 1919 the age distributiowas more iline with years without           aepidemic. At the moment we caonly speculate as to why. Perhaps young adults who           overcame the first wave had acquired immunity by 1919, but that does not explaiwhy the           elderly, who had not beeat much risk i1918, were now affected irelatively large           numbers. ",
+      "cues": [
+        {
+          "cueType": "title-prologue",
+          "data": {
+            "type": "template",
+            "template": "# III. {$ds-Metadata/dct:title}"
+          }
+        }
+      ],
+      "metadata": {
+        "@context": "metadata",
+        "title": "Social distributioof the flu"
+      }
+    },
+    {
+      "id": "6ccfaa8e-e380-4732-96a4-09cd6c887ebe/b13",
+      "type": "Block",
+      "kind": "Query",
+      "mime": "application/sparql-query",
+      "content": "\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX schema: <http://schema.org/>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX iisgv:  <https://iisg.amsterdam/openarchdeaths1910_1920/vocab/>\nPREFIX iisgv2: <https://iisg.amsterdam/openarchdeath/vocab/>\nPREFIX gg:     <http://www.gemeentegeschiedenis.nl/gg-schema#>\nPREFIX geo:    <http://www.opengis.net/ont/geosparql#>\nPREFIX bio:    <http://purl.org/vocab/bio/0.1/>\n\nSELECT ?age (?1910/xsd:decimal(?total_1910)*100 as?share_1910)\n            (?november_1918/xsd:decimal(?november_1918_total)*100 as ?share_november_1918)\n            (?winter_1919/xsd:decimal(?winter_1919_total)*100 as ?share_winter_1919)\n\n WHERE { { select ?total_1910 ?age ?november_1918_total\n                  ?winter_1919_total\n                  (sum(if(?year = \"1918\"^^<http://www.w3.org/2001/XMLSchema#int> && ?month = 11, 1, 0)) as ?november_1918)\n                  (sum(if(?year = \"1910\"^^<http://www.w3.org/2001/XMLSchema#int>, 1, 0)) as ?1910)\n                  (sum(if(?year = \"1919\"^^<http://www.w3.org/2001/XMLSchema#int> && ?month >= 3, 1, 0)) as ?winter_1919)\n                  { ?death a bio:Death . ?death iisgv:deceased ?deceased .\n                    # ?deceased schema:gender \"m\" .\n                    ?deceased iisgv:ageYears ?age.\n                    ?death bio:date ?date .\n                    BIND(year(?date) as ?year)\n                    BIND(month(?date) as ?month)\n                    FILTER(?age > 0) # excluded because there may still be an issue with age=0\n                    { select (sum(if(?year = \"1910\"^^<http://www.w3.org/2001/XMLSchema#int>, 1, 0)) as ?total_1910)\n                           (sum(if(?year = \"1918\"^^<http://www.w3.org/2001/XMLSchema#int> && ?month = 11, 1, 0)) as ?november_1918_total)\n                           (sum(if(?year = \"1919\"^^<http://www.w3.org/2001/XMLSchema#int> && ?month >= 3, 1, 0)) as ?winter_1919_total)\n                           { ?death a bio:Death .\n                             ?death iisgv:deceased ?deceased .\n                             #?deceased schema:gender \"m\" .\n                             ?deceased iisgv:ageYears ?age.\n                             ?death bio:date ?date .\n                             BIND(year(?date) as ?year)\n                             BIND(month(?date) as ?month)\n                             FILTER(?age > 0) # excluded because there may still be a slight issue with age=0\n                           }\n                    }\n\n                  }\n }}\n\n ORDER BY ASC (?age) ",
+      "cues": [
+        {
+          "cueType": "visualisation",
+          "data": {
+            "type": "gchart"
+          }
+        },
+        {
+          "type": "data-output-config",
+          "data": {
+            "chartConfig": {
+              "options": {
+                "labelField": "age",
+                "dataSets": [
+                  {
+                    "field": "share_1910",
+                    "color": "rgb(0, 102, 0)",
+                    "fill": true,
+                    "density": 0.1
+                  },
+                  {
+                    "field": "share_november_1918",
+                    "color": "rgb(204, 0, 0)",
+                    "fill": true,
+                    "density": 0.1
+                  },
+                  {
+                    "field": "share_winter_1919",
+                    "color": "rgb(175, 92, 96)",
+                    "fill": true,
+                    "density": 0.1
+                  }
+                ]
+              },
+              "chartType": "LineChart"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "6ccfaa8e-e380-4732-96a4-09cd6c887ebe/b14",
+      "type": "Block",
+      "kind": "Text",
+      "mime": "text/markdown",
+      "_text": "Last, we examine whether people from           certaioccupations experienced higher death rates thausual. This could suggest they           had a higher exposure to the virus. To do so, occupational titles of the deceased are           grouped under occupational categories, using the HISCO Unit Group code. Only those of           age of 18-45 are examined, to see if their high death rates cabe (partially) explained           by their occupation. Deaths per occupational group i1918 are agaicompared to their           corresponding meaduring 1910-17. The excess death rate of this age group igeneral           was a staggering 2.95, so people from occupational groups above this figure were even           worse off. Next to nurses, who had by nature high exposure to the virus, it shows that           clerks, miners, weavers and fishermedied relatively more oftei1918. Perhaps           working iclosed-off environments, or with many people ithe same place provides an           explanation. Those working mostly outside, such as street vendors, dockers, and brick           layers were better off. Yet some other groups working inside, such as tailors and shoe           makers, were also affected relatively modestly, suggesting that working environments           alone may not provide a sufficient explanation. Iany case, and iline with [other           studies](https://academic.oup.com/aje/article/187/12/2568/5060513#126180950), we observe           no discernable hierarchical relatiobetweesocial class - measured by HISCAM - and           excess mortality. "
+    },
+    {
+      "id": "6ccfaa8e-e380-4732-96a4-09cd6c887ebe/b15",
+      "type": "Block",
+      "kind": "Query",
+      "mime": "application/sparql-query",
+      "content": "\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX schema: <http://schema.org/> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX iisgv:  <https://iisg.amsterdam/openarchdeaths1910_1920/vocab/>\nPREFIX iisgv2: <https://iisg.amsterdam/openarchdeath/vocab/>\nPREFIX gg:     <http://www.gemeentegeschiedenis.nl/gg-schema#>\nPREFIX geo:    <http://www.opengis.net/ont/geosparql#>\nPREFIX bio:    <http://purl.org/vocab/bio/0.1/>\nPREFIX bif:     <http://www.openlinksw.com/schemas/bif#>\n\nSELECT ?unit_group ?occupational_group ?mean ?1918 ?excess\n\n WHERE {\n      FILTER(?mean >5) # to avoid 'division by 0' error\n      FILTER(?1918 >0)\n      { select ?unit_group ?occupational_group\n        (sum(if(?year = \"1918\"^^<http://www.w3.org/2001/XMLSchema#int>, 1, 0)) as ?1918)\n        (sum(if(?year = \"1910\"^^<http://www.w3.org/2001/XMLSchema#int>, 1, 0)) as ?1910)\n        (sum(if(?year = \"1911\"^^<http://www.w3.org/2001/XMLSchema#int>, 1, 0)) as ?1911)\n        (sum(if(?year = \"1912\"^^<http://www.w3.org/2001/XMLSchema#int>, 1, 0)) as ?1912)\n        (sum(if(?year = \"1913\"^^<http://www.w3.org/2001/XMLSchema#int>, 1, 0)) as ?1913)\n        (sum(if(?year = \"1914\"^^<http://www.w3.org/2001/XMLSchema#int>, 1, 0)) as ?1914)\n        (sum(if(?year = \"1915\"^^<http://www.w3.org/2001/XMLSchema#int>, 1, 0)) as ?1915)\n        (sum(if(?year = \"1916\"^^<http://www.w3.org/2001/XMLSchema#int>, 1, 0)) as ?1916)\n        (sum(if(?year = \"1917\"^^<http://www.w3.org/2001/XMLSchema#int>, 1, 0)) as ?1917)\n        { ?death a bio:Death .\n          ?death iisgv:deceased ?deceased .\n          ?deceased iisgv:ageYears ?age .\n          ?deceased schema:hasOccupation ?occ.\n          ?occ schema:categoryCode ?hisco .\n          ?hisco rdfs:subClassOf ?unit_group .\n          ?unit_group schema:name ?occupational_group .\n          ?death bio:date ?date .\n          BIND(year(?date) as ?year)\n          FILTER(?age >= 18 && ?age <= 45)\n        }\n      }\n      BIND(xsd:float(?1910+?1911+?1912+?1913+?1914+?1915+?1916+?1917)/8 as ?mean)\n      BIND(xsd:decimal(?1918/?mean) as ?excess) } ORDER BY DESC (?excess) ",
+      "cues": [
+        {
+          "cueType": "visualisation",
+          "data": {
+            "type": "table"
+          }
+        },
+        {
+          "cueType": "data-output-config",
+          "data": {
+            "pageSize": 10
+          }
+        }
+      ],
+      "metadata": {
+        "@context": "metadata",
+        "title": "Excess mortality of those aged 18-45 per occupational group in                   1918:"
+      }
+    },
+    {
+      "id": "6ccfaa8e-e380-4732-96a4-09cd6c887ebe/b16",
+      "type": "Block",
+      "kind": "Query",
+      "mime": "application/sparql-query",
+      "content": "\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX schema: <http://schema.org/>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX iisgv:  <https://iisg.amsterdam/openarchdeaths1910_1920/vocab/>\nPREFIX iisgv2: <https://iisg.amsterdam/openarchdeath/vocab/>\nPREFIX gg:     <http://www.gemeentegeschiedenis.nl/gg-schema#>\nPREFIX geo:    <http://www.opengis.net/ont/geosparql#>\nPREFIX bio:    <http://purl.org/vocab/bio/0.1/>\nPREFIX bif:    <http://www.openlinksw.com/schemas/bif#>\n\nSELECT ?hiscam ?excess\n\n WHERE {\n\n         FILTER(?mean >2) # to avoid 'division by 0'\n         FILTER(?1918 >0) {\n           select ?hiscam (sum(if(?year =\n            \"1918\"^^<http://www.w3.org/2001/XMLSchema#int>, 1, 0)) as ?1918)\n            (sum(if(?year = \"1910\"^^<http://www.w3.org/2001/XMLSchema#int>, 1, 0)) as ?1910)\n            (sum(if(?year = \"1911\"^^<http://www.w3.org/2001/XMLSchema#int>, 1, 0)) as ?1911)\n            (sum(if(?year = \"1912\"^^<http://www.w3.org/2001/XMLSchema#int>, 1, 0)) as ?1912)\n            (sum(if(?year = \"1913\"^^<http://www.w3.org/2001/XMLSchema#int>, 1, 0)) as ?1913)\n            (sum(if(?year = \"1914\"^^<http://www.w3.org/2001/XMLSchema#int>, 1, 0)) as ?1914)\n            (sum(if(?year = \"1915\"^^<http://www.w3.org/2001/XMLSchema#int>, 1, 0)) as ?1915)\n            (sum(if(?year = \"1916\"^^<http://www.w3.org/2001/XMLSchema#int>, 1, 0)) as ?1916)\n            (sum(if(?year = \"1917\"^^<http://www.w3.org/2001/XMLSchema#int>, 1, 0)) as ?1917)\n            { ?death a bio:Death .\n              ?death iisgv:deceased ?deceased .\n              ?deceased iisgv:ageYears ?age .\n              ?deceased schema:hasOccupation ?occ .\n              ?occ iisgv2:hiscam_nl ?hiscam .\n              ?death bio:date ?date .\n\n              BIND(year(?date) as ?year)\n              FILTER(?age >= 18 && ?age <= 45)\n              FILTER(?hiscam >39)\n            }\n           }\n           BIND(xsd:float(?1910+?1911+?1912+?1913+?1914+?1915+?1916+?1917)/8 as ?mean)\n           BIND(xsd:decimal(?1918/?mean) as ?excess)\n       }\n\n ORDER BY DESC (?excess) ",
+      "cues": [
+        {
+          "cueType": "visualisation",
+          "data": {
+            "type": "gchart"
+          }
+        },
+        {
+          "cueType": "data-output-config",
+          "data": {
+            "chartConfig": {
+              "options": {
+                "dataSets": [
+                  {
+                    "x-field": "hiscam",
+                    "y-field": "excess",
+                    "label": "Excess death rate",
+                    "color": "rgb(204, 0, 0)"
+                  }
+                ]
+              },
+              "chartType": "ScatterChart"
+            }
+          }
+        }
+      ],
+      "metadata": {
+        "@context": "metadata",
+        "title": "Correlatiobetweemeaexcess mortality (ages 18-45) and social class                   :"
+      }
+    },
+    {
+      "id": "6ccfaa8e-e380-4732-96a4-09cd6c887ebe/b17",
+      "type": "Block",
+      "kind": "Text",
+      "mime": "text/markdown",
+      "content": " By using Linked Data to connect Dutch death certificates to other datasets,           such as Gemeentegeschiedenis and HISCO, we cafor the first time attempt an           encompassing study into the 1918-19 epidemic. Our, still preliminary, results suggest           that the odds of meeting someone who carried the virus probably mattered most, and that           this was partially affected by working environments, such as the number of co-workers           and working inside, and also by where you lived iThe Netherlands. Some regions, such           as Groningen, were notably more affected thaothers. The next step would be to study           these variables icombination, and set up a case-control study comparing the           social-demographic structure of such regions with regions or municipalities that were           affected to a smaller degree. Ithe near future we will also be able to link these           death certificates across the complete civil registry, allowing to reconstruct family           trees. Ithis way it will be possible to take into account household compositioand           genetic traits as well, such as a comparisoof mortality betweesiblings or between           different generations of the same family. ",
+      "cues": [
+        {
+          "cueType": "title-prologue",
+          "data": {
+            "type": "template",
+            "template": "# I. {$ds-Metadata/dct:title}"
+          }
+        }
+      ],
+      "metadata": {
+        "@context": "metadata",
+        "title": "Conclusion"
+      }
+    }
+  ],
+  "runs": [
+    {
+      "type": "Run",
+      "when": "2022-03-16T15:00:00",
+      "resources": [
+        {
+          "href": "flu.warc.gz",
+          "mime": "application/warc"
+        }
+      ]
+    },
+    {
+      "type": "Run",
+      "when": "2022-03-30T12:00:00",
+      "resources": [
+        {
+          "href": "data/standardization_share.csv",
+          "mime": "text/csv",
+          "ref": "6ccfaa8e-e380-4732-96a4-09cd6c887ebe/b2"
+        },
+        {
+          "href": "img/occupation_share-geo.csv",
+          "mime": "text/csv",
+          "ref": "6ccfaa8e-e380-4732-96a4-09cd6c887ebe/b5"
+        },
+        {
+          "href": "img/occupation_share-geo.png",
+          "mime": "image/png",
+          "ref": "6ccfaa8e-e380-4732-96a4-09cd6c887ebe/b5"
+        }
+      ]
+    }
+  ]
+}
