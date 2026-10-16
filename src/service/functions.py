@@ -441,7 +441,7 @@ def fs_tree_to_dict(path_):
 
 
 def getDataStory(uuid):
-    directory = DATA_LOCATION + "/" + str(uuid) # misschien niet meer nodig
+    directory = DATA_LOCATION + "/" + uuid # misschien niet meer nodig
     filename = directory + '/datastory.json'
     datastory = {}
     if os.path.exists(filename):

@@ -87,8 +87,49 @@ def revoke_rights(ds: str, eppn: str, userdata: Annotated[dict | None, Depends(a
         revoke_user_rights(ds, eppn)
     return {"status": "OK"}
 
+# hier moet de sqllite database bevraagd worden, om de lijstpagina te genereren
+@app.get("/datastories")
+async def get_DataStories(userdata: Annotated[dict | None, Depends(authenticated_user)]):
+    status = 'OK'
+    # print('hier')
+    auth_status = get_auth_status(userdata)
+    structure = getDataStoriesDB(auth_status)
+    message = get_message()
+    response = {"status": status, "auth": auth_status, "structure": structure, "message": message}
+    # print(json.dumps(response, indent=4, ensure_ascii=False))
+    return response
+
+
+# een datastory is een complete json file, ik hoef geen structuur te parsen
+@app.get("/datastories/{ds}")
+async def get_datastory(ds: str, userdata: Annotated[dict | None, Depends(authenticated_user)]):
+    datastory = {}
+    uuid = ds
+
+
+    listUUIDS = getListUUIDs()
+    # print(listUUIDS)
+    if uuid not in listUUIDS:
+        raise HTTPException(
+            status_code=404,
+            detail="UUID not available"
+        )
+
+    status = get_auth_status(userdata)
+    status["rights"] = get_item_rights(uuid, status)
+    #print('uuid', uuid)
+    if not uuid:
+        status = 'INVALID REQUEST, NO UUID'
+
+    else:
+        datastory = getDataStory(uuid) # kan empty zijn
+
+    response = {"status": status, "datastory": datastory}
+    return response
+
+
 @app.post("/datastories")
-def create_new(userdata: Annotated[dict | None, Depends(authenticated_user)]):
+def create_new_datastory(userdata: Annotated[dict | None, Depends(authenticated_user)]):
     user_status = get_auth_status(userdata)
     max = 100 # maximaal 100 datastories
     if tooManyStories(max) or user_status["logged_in"] == "no":
@@ -105,7 +146,7 @@ def create_new(userdata: Annotated[dict | None, Depends(authenticated_user)]):
 # DELETE a DATASTORY rewritten again in proper REST added authentication
 
 @app.delete("/datastories/{ds}")
-def delete(ds: UUID, userdata: Annotated[dict | None, Depends(authenticated_user)]):
+def delete_Datastory(ds: UUID, userdata: Annotated[dict | None, Depends(authenticated_user)]):
     ds_str = str(ds)
 
     listUUIDS = getListUUIDs()
@@ -127,52 +168,28 @@ def delete(ds: UUID, userdata: Annotated[dict | None, Depends(authenticated_user
         "uuid": ds_str
     }
 
-
-# een datastory is een complete json file, ik hoef geen structuur te parsen
-@app.get("/datastories/{ds}")
-async def get_item(ds: str, userdata: Annotated[dict | None, Depends(authenticated_user)]):
-    datastory = {}
-    uuid = ds
-    status = get_auth_status(userdata)
-    status["rights"] = get_item_rights(uuid, status)
-    #print('uuid', uuid)
-    if not uuid:
-        status = 'INVALID REQUEST, NO UUID'
-
-    else:
-        datastory = getDataStory(uuid) # kan empty zijn
-
-    response = {"status": status, "datastory": datastory}
-    return response
-
-
-# hier moet de sqllite database bevraagd worden, om de lijstpagina te genereren
-@app.get("/datastories")
-async def getDataStories(userdata: Annotated[dict | None, Depends(authenticated_user)]):
-    status = 'OK'
-    # print('hier')
-    auth_status = get_auth_status(userdata)
-    structure = getDataStoriesDB(auth_status)
-    message = get_message()
-    response = {"status": status, "auth": auth_status, "structure": structure, "message": message}
-    # print(json.dumps(response, indent=4, ensure_ascii=False))
-    return response
+# UPDATE a DATASTORY
 
 @app.put("/datastories/{ds}")
-async def updateDataStory(ds:UUID, request: Request):
+async def update_DataStory(ds:UUID, request: Request):
     data = await request.json()
     # datastory_id = data["datastory_id"]
     datastory_id = str(ds)
     datastory_title = data["datastory_title"]
     datastory = data["datastory_file"]
+
+    # Bestaat de datastory?
+    listUUIDS = getListUUIDs()
+
+    if not datastory_id in listUUIDS:
+        raise HTTPException(
+            status_code=404,
+            detail="Datastory not found"
+        )
+
     # print(json.dumps(datastory, indent=4, ensure_ascii=False))
     # even if you save one element from one block in the interface, the whole datastory is saved as a json structure
 
-    # save the content to file
-    #path = "data/" + str(datastory_id) + "/datastory.json"
-
-    #with open(path, 'w') as f:
-    #    json.dump(datastory, f)
     saveDataStory(datastory_id, datastory)
     updateModifiedDate(datastory_id, datastory_title)
 
@@ -190,66 +207,15 @@ async def updateDataStory(ds:UUID, request: Request):
 #     return(jsonify({"status": "ok", "logged_in": session.get('logged_in')}))
 
 # Question worden de uuid's gemaakt aan de client kant? Nee. Bij de eerste datastory create_new
-@app.post('/upload')
-async def upload(file: UploadFile, uuid: str = Form(...)):
-    if not file:
-        print('No file in request')
-        return {"status": "No file in request"}
-
-    if not uuid:
-        print('No uuid')
-        return {"status": "No uuid"}
-
-    listUUIDS = getListUUIDs()
-    # print(listUUIDS)
-    if not uuid in listUUIDS:
-        # print('zit er niet in')
-        return {"status": "uuid not available"}
-
-    filename = os.path.basename(file.filename)
-    if not filename or filename in ('.', '..'):
-        return {"status": "Invalid filename"}
-
-    content_type = file.content_type
-
-    resources = DATA_LOCATION + "/" + uuid + '/resources'
-
-    if content_type.startswith('image'):
-        store = resources + '/images/'
-    elif content_type.startswith('audio'):
-        store = resources + '/audio/'
-    elif content_type.startswith('video'):
-        store = resources + '/video/'
-    else:
-        return {"status": "Go Home!"}
-        # exit()
-
-    # https://tedboy.github.io/flask/generated/generated/werkzeug.FileStorage.html
-
-    filepath = store + filename
-    data = await file.read() # je moet de bytes readen uit een DataStorage Object
-    with open(filepath, 'ab') as f:
-        f.write(data)
-
-    if os.path.exists(filepath):
-        status = "OK"
-    else:
-        status = "NOT OK"
-
-    return status
-
-
-# Question worden de uuid's gemaakt aan de client kant? Nee. Bij de eerste datastory create_new
-
 
 @app.post("/datastories/{datastory_id}/resources")
 async def upload_resource(datastory_id: UUID, file: UploadFile = File(...)):
-    datastory_id = str(datastory_id)
+    datastory_id_str = str(datastory_id)
 
     # Bestaat de datastory?
     listUUIDS = getListUUIDs()
 
-    if not datastory_id in listUUIDS:
+    if not datastory_id_str in listUUIDS:
         raise HTTPException(
             status_code=404,
             detail="Datastory not found"
@@ -264,11 +230,7 @@ async def upload_resource(datastory_id: UUID, file: UploadFile = File(...)):
     filename = os.path.basename(file.filename)
     content_type = file.content_type or ""
 
-    resources = os.path.join(
-        DATA_LOCATION,
-        datastory_id,
-        "resources"
-    )
+    resources = os.path.join(DATA_LOCATION,datastory_id_str,"resources")
 
     if content_type.startswith("image/"):
         store = os.path.join(resources, "images")

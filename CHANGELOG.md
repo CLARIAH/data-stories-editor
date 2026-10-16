@@ -1,6 +1,15 @@
 # Changelog MvdP
 
 
+## 16-10-2026
+
+- refactoren naamgeving gedecoreerde functies tbv Swagger
+- herbekijken van alles
+- refactoren
+- leren van fastAPI, typing, pydantic
+- vscode editor aanpassen
+
+
 ## 4-9-2026
 
 - upload van een resource  `@app.post('/upload')` =>     `@app.post("/datastories/{datastory_id}/resources")`
