@@ -12,6 +12,7 @@ import toml
 from pathlib import Path
 
 
+
 def createDataFolder():
     #data = 'data/'
     if not os.path.exists(DATA_LOCATION):
